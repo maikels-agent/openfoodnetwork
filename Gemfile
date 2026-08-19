@@ -7,7 +7,7 @@ ruby File.read('.ruby-version').chomp
 
 gem 'dotenv', require: 'dotenv/load' # Load ENV vars before other gems
 
-gem 'rails'
+gem 'rails', '~> 8.0.0'
 
 # Active Storage
 gem "active_storage_validations"
@@ -134,7 +134,7 @@ gem 'flipper-active_record'
 gem 'flipper-ui'
 
 gem "view_component"
-gem 'view_component_reflex', '3.1.14.pre9'
+gem 'view_component_reflex'
 
 # mini_portile2 is needed when installing with Vargant
 # https://openfoodnetwork.slack.com/archives/CEBMTRCNS/p1668439152992899
