@@ -18,62 +18,84 @@ class OrderBuilder < DfcBuilder
     DataFoodConsortium::ConnectorV1::Order.new(
       id,
       client: urls.enterprise_url(ofn_order.distributor_id),
-      orderStatus: "dfc-v:Held",
+      orderStatus: order_status(ofn_order),
     )
   end
 
-  def self.apply(ofn_order, dfc_order)
-    # Set order state if recognised
-    set_order_state(ofn_order, dfc_order)
-
-    incoming = incoming_quantities(dfc_order)
-    attrs, stale_ids = build_line_item_attributes(ofn_order, incoming)
-    destroy_stale_line_items(ofn_order, stale_ids)
-
-    ofn_order.update(line_items_attributes: attrs)
+  # A backorder stays "Held" until the order cycle closes and the client
+  # completes it. We don't record that distinction on an OFN order yet, so we
+  # report the one status we can be sure about. The client (see
+  # FdcBackorderer#lookup_open_order) relies on "Held" to find its open orders.
+  def self.order_status(ofn_order)
+    ofn_order.state == "canceled" ? "dfc-v:Cancelled" : "dfc-v:Held"
   end
 
-  def self.set_order_state(ofn_order, dfc_order)
-    ofn_order.state = "complete" if dfc_order.orderStatus == order_states.HELD
-    ofn_order.completed_at ||= Time.zone.now if dfc_order.orderStatus == order_states.COMPLETE
+  # Applies a DFC order to an OFN order.
+  #
+  # Line items are applied before the order status because completing an order
+  # changes how line items are saved: `Spree::OrderInventory` only assigns
+  # inventory units for orders that are already complete.
+  #
+  # Returns false and leaves the order untouched if the payload is invalid.
+  def self.apply(ofn_order, dfc_order, variant_scope: Spree::Variant)
+    attrs, stale_ids, unknown =
+      OrderLineItemsBuilder.attributes(ofn_order, dfc_order, variant_scope)
+
+    if unknown.any?
+      ofn_order.errors.add(:line_items, "reference unknown products: #{unknown.join(', ')}")
+      return false
+    end
+
+    ofn_order.transaction do
+      ofn_order.update!(line_items_attributes: attrs)
+      destroy_stale_line_items(ofn_order, stale_ids)
+      apply_order_status(ofn_order, dfc_order)
+    end
+
+    true
+  rescue ActiveRecord::RecordInvalid
+    false
+  end
+
+  def self.apply_order_status(ofn_order, dfc_order)
+    case dfc_order.orderStatus
+    when order_states.HELD, order_states.COMPLETE
+      complete(ofn_order)
+    when order_states.CANCELLED
+      cancel(ofn_order)
+    end
+  end
+
+  # An order we received is a real order: it needs a shipment so that stock is
+  # reserved, and `completed_at` so that the rest of OFN treats it as placed.
+  # Without `completed_at` it would show up as the ordering user's shopping
+  # cart (`Spree::User#last_incomplete_spree_order`) and could never be
+  # cancelled (`Spree::Order#allow_cancel?`).
+  def self.complete(ofn_order)
+    return if ofn_order.completed?
+    return if ofn_order.line_items.empty?
+
+    ofn_order.create_proposed_shipments
+    ofn_order.state = "complete"
+    ofn_order.finalize!
+  end
+
+  def self.cancel(ofn_order)
+    ofn_order.send_cancellation_email = false
+    ofn_order.cancel! if ofn_order.allow_cancel?
   end
 
   def self.destroy_stale_line_items(ofn_order, stale_ids)
     # `accepts_nested_attributes_for :line_items` does not permit `:_destroy`,
     # so remove line items that are no longer present explicitly.
-    ofn_order.line_items.where(id: stale_ids).destroy_all if stale_ids.any?
-  end
+    return if stale_ids.empty?
 
-  def self.incoming_quantities(dfc_order)
-    dfc_order.lines.each_with_object({}) do |line, hash|
-      next if line.quantity.nil? || line.quantity <= 0
-      next if line.offer&.offeredItem.nil?
+    ofn_order.line_items.where(id: stale_ids).destroy_all
 
-      vid = semantic_id(line.offer.offeredItem).split(%r{/supplied_products/}i).last
-      hash[vid.to_i] = line.quantity
-    end
-  end
-
-  def self.build_line_item_attributes(ofn_order, incoming)
-    attrs = []
-    stale_ids = []
-
-    ofn_order.line_items.each do |li|
-      if incoming.key?(li.variant_id)
-        # Update existing line items
-        attrs << { id: li.id, quantity: incoming.delete(li.variant_id) }
-      else
-        # Delete line items that weren't provided
-        stale_ids << li.id
-      end
-    end
-
-    # Create any new line items
-    incoming.each do |variant_id, quantity|
-      attrs << { variant_id:, quantity: }
-    end
-
-    [attrs, stale_ids]
+    # `destroy_all` on the association relation doesn't update the parent's
+    # loaded collection. Tax adjustments would then be recalculated against
+    # deleted line items.
+    ofn_order.line_items.reload
   end
 
   def self.order_states
