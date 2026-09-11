@@ -50,6 +50,18 @@ RSpec.describe 'External home page' do
     expect(page).to have_selector "#footer"
   end
 
+  # Our app styles every `button` like a form button, which would override the
+  # styles the CMS gives to its own controls. See external_page.scss.
+  it "leaves the styling of CMS buttons to the CMS" do
+    visit root_path
+
+    background = page.evaluate_script(
+      "getComputedStyle(document.querySelector('[role=\"tab\"]')).backgroundColor"
+    )
+
+    expect(background).to eq "rgba(0, 0, 0, 0)"
+  end
+
   # WordPress renders all tab panels hidden and reveals the active one with its
   # own JavaScript, which we don't load. See WpTabsController.
   it "shows one tab panel at a time" do

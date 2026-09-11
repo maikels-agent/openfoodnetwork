@@ -9,3 +9,26 @@
     min-height: calc(100vh - #{$topbar-height}) !important;
   }
 }
+
+// The CMS renders `button` elements for its own controls, like the tabs block,
+// and styles them with selectors of zero specificity, expecting a theme to
+// build on top of them. Our buttons look like form buttons and win over that,
+// so we undo our own styling here.
+//
+// We wrap the scope in `:where` to keep the weight of a single element
+// selector, the same as our own `button` styles. Anything the CMS sets with a
+// class or an inline style is heavier and stays in control, which is what
+// lets content editors change these styles without touching the app.
+:where(.external-page) button {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  text-shadow: none;
+
+  // The same padding the CMS applies, including its spacing presets.
+  padding: var(--wp--preset--spacing--20, 0.5em) var(--wp--preset--spacing--30, 1em);
+}

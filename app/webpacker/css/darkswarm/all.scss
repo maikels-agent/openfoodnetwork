@@ -40,7 +40,6 @@
 @import 'distributor_header';
 @import 'embedded_shopfront';
 @import 'expanding-sidebar';
-@import 'external_page';
 @import 'footer';
 @import 'forms';
 @import 'groups';
@@ -83,6 +82,10 @@ ofn-modal {
 
 @import "../shared/question-mark-icon";
 @import '../admin/shared/scroll_bar';
+
+// Last, because it undoes some of our own styles for content which comes from
+// an external CMS.
+@import 'external_page';
 
 @import 'modal_component/modal_component';
 @import 'carousel_component/carousel_component';
