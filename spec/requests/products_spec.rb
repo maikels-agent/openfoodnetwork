@@ -38,6 +38,30 @@ RSpec.describe ProductsController do
         expect(page).to have_selector "#variant-#{product.variants.first.id}"
       end
 
+      # The only way to choose the single order cycle of a shop that has one, so that
+      # the shopper can add to their cart from here.
+      it "points an empty cart at this shop and order cycle" do
+        get enterprise_product_path(enterprise, product)
+
+        expect(Spree::Order.last).to have_attributes(
+          distributor: enterprise, order_cycle:
+        )
+      end
+
+      it "leaves a cart with something in it where it is" do
+        other_shop = create(:distributor_enterprise)
+        other_order = create(:order_with_line_items, distributor: other_shop,
+                                                     line_items_count: 1)
+        session_hash[:order_id] = other_order.id
+
+        get enterprise_product_path(enterprise, product)
+
+        expect(other_order.reload).to have_attributes(
+          distributor: other_shop, order_cycle: nil
+        )
+        expect(other_order.line_items).to be_present
+      end
+
       # A variant of another shop's order cycle isn't on offer here.
       it "leaves out variants that aren't distributed by this shop" do
         other_variant = create(:variant, product:)
@@ -74,6 +98,13 @@ RSpec.describe ProductsController do
 
         expect(page).to have_content "Please choose an order cycle"
         expect(page).not_to have_selector ".variant-list"
+      end
+
+      # There's nothing to point the cart at until the shopper chooses.
+      it "doesn't start shopping here" do
+        get enterprise_product_path(enterprise, product)
+
+        expect(Spree::Order.last&.order_cycle).to be_nil
       end
     end
   end

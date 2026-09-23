@@ -19,6 +19,7 @@ class ProductsController < BaseController
 
     @order_cycles = Shop::OrderCyclesList.ready_for_checkout_for(@enterprise, customer)
     @order_cycle = selected_order_cycle
+    start_shopping_with_empty_cart
 
     # The variants on offer depend on the order cycle. Without one, we can only show the
     # product itself and let the shopper choose an order cycle first.
@@ -46,6 +47,23 @@ class ProductsController < BaseController
   end
 
   private
+
+  # An empty cart has no state to lose, so we can point it at this shop and order cycle
+  # while the shopper is only looking. That's what lets them add to it from here without
+  # visiting the shop first, which is the only way to choose the single order cycle of a
+  # shop that has one.
+  #
+  # A cart with something in it stays where it is. Adding to it from another shop's page
+  # then fails the way it does today, and choosing an order cycle asks first.
+  def start_shopping_with_empty_cart
+    return if @order_cycle.nil?
+
+    order = current_order(false)
+    return if order&.line_items&.any?
+    return if order&.distributor == @enterprise && order.order_cycle == @order_cycle
+
+    start_shopping(@order_cycle)
+  end
 
   def start_shopping(order_cycle)
     order = current_order(true)
