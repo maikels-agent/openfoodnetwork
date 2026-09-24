@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ProductsController < BaseController
+  include StartsShopping
+
   def index
     @products = product_renderer.products_view
 
@@ -19,7 +21,6 @@ class ProductsController < BaseController
 
     @order_cycles = Shop::OrderCyclesList.ready_for_checkout_for(@enterprise, customer)
     @order_cycle = selected_order_cycle
-    start_shopping_with_empty_cart
 
     # The variants on offer depend on the order cycle. Without one, we can only show the
     # product itself and let the shopper choose an order cycle first.
@@ -38,43 +39,14 @@ class ProductsController < BaseController
   # the way the shopfront does, emptying it when either of them changes.
   def select_order_cycle
     @enterprise = Enterprise.find_by!(permalink: params[:enterprise_permalink])
-    order_cycles = Shop::OrderCyclesList.ready_for_checkout_for(@enterprise, customer)
-    chosen = order_cycles.find { |order_cycle| order_cycle.id == params[:order_cycle_id].to_i }
+    chosen = order_cycle_on_offer(@enterprise, params[:order_cycle_id])
 
-    start_shopping(chosen) if chosen
+    start_shopping(current_order(true), @enterprise, chosen) if chosen
 
     redirect_to enterprise_product_path(@enterprise, params[:id])
   end
 
   private
-
-  # An empty cart has no state to lose, so we can point it at this shop and order cycle
-  # while the shopper is only looking. That's what lets them add to it from here without
-  # visiting the shop first, which is the only way to choose the single order cycle of a
-  # shop that has one.
-  #
-  # A cart with something in it stays where it is. Adding to it from another shop's page
-  # then fails the way it does today, and choosing an order cycle asks first.
-  def start_shopping_with_empty_cart
-    return if @order_cycle.nil?
-
-    order = current_order(false)
-    return if order&.line_items&.any?
-    return if order&.distributor == @enterprise && order.order_cycle == @order_cycle
-
-    start_shopping(@order_cycle)
-  end
-
-  def start_shopping(order_cycle)
-    order = current_order(true)
-
-    # reset_distributor must be called before any call to current_customer
-    cart_reset = Orders::CartResetService.new(order, @enterprise.permalink)
-    cart_reset.reset_distributor
-    cart_reset.reset_other!(spree_current_user, customer)
-
-    order.assign_order_cycle!(order_cycle)
-  end
 
   def product_renderer(args = search_params)
     ProductsRenderer.new(
