@@ -17,6 +17,33 @@ def system!(*args)
   system(*args) || abort("\n== Command #{args} failed ==")
 end
 
+# Warn about missing system tools. They are not needed to start the app but
+# some features and specs fail with confusing errors without them.
+def check_system_dependencies
+  warnings = []
+
+  unless system("command -v identify > /dev/null 2>&1")
+    warnings << "ImageMagick (`identify`) not found: image uploads and their specs will fail."
+  end
+
+  # Find a browser the same way Ferrum does when running the specs.
+  browser_found = ENV["BROWSER_PATH"].to_s != "" || system(
+    "bundle", "exec", "ruby", "-rferrum",
+    "-e", "exit !Ferrum::Browser::Options::Chrome.options.detect_path.nil?",
+    out: File::NULL, err: File::NULL
+  )
+  unless browser_found
+    warnings << "Chrome or Chromium not found: system specs and PDF invoices will fail. " \
+                "Install it or set BROWSER_PATH."
+  end
+
+  if warnings.empty?
+    puts "All found."
+  else
+    warnings.each { |warning| puts "\e[0;33mWarning: #{warning}\e[0m" }
+  end
+end
+
 FileUtils.chdir APP_ROOT do
   # This script is a way to set up or update your development environment automatically.
   # This script is idempotent, so that you can run it at any time and get an expectable outcome.
@@ -31,6 +58,9 @@ FileUtils.chdir APP_ROOT do
   # Install JavaScript dependencies
   system("command -v yarn 2> /dev/null") || system!("script/nodenv-install.sh")
   system!("bin/yarn")
+
+  puts "\n== Checking system dependencies =="
+  check_system_dependencies
 
   # puts "\n== Copying sample files =="
   # unless File.exist?("config/database.yml")
