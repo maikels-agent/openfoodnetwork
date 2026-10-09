@@ -8,6 +8,7 @@ sudo apt update
 sudo apt upgrade --yes
 sudo apt install --yes\
      build-essential cmake pkg-config\
+     curl\
      git\
      libyaml-dev\
      libffi-dev\
@@ -15,11 +16,28 @@ sudo apt install --yes\
      libpq-dev\
      libzstd-dev\
      zlib1g-dev\
-     chromium\
      imagemagick\
      nginx\
      postgresql\
      redis\
+
+# A browser for system specs and PDF invoices.
+# Ubuntu's chromium package is only a wrapper for a snap, which doesn't work in
+# containers, so we install Google Chrome there instead.
+. /etc/os-release
+if [ "$ID" = "ubuntu" ]; then
+  if [ "$(dpkg --print-architecture)" = "amd64" ]; then
+    chrome_deb="$(mktemp --suffix=.deb)"
+    curl -fsSL -o "$chrome_deb" https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    sudo apt install --yes "$chrome_deb"
+    rm -f "$chrome_deb"
+  else
+    echo "Google Chrome isn't available for $(dpkg --print-architecture)."
+    echo "Install Chrome or Chromium yourself to run system specs."
+  fi
+else
+  sudo apt install --yes chromium
+fi
 
 sudo -u postgres psql -c "CREATE USER ofn WITH SUPERUSER CREATEDB PASSWORD 'f00d'"
 
