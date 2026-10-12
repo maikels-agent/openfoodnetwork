@@ -46,6 +46,41 @@ RSpec.describe EnterpriseGroup do
 
     it { is_expected.to have_one_attached :promo_image }
     it { is_expected.to have_one_attached :logo }
+
+    describe "attachment validation" do
+      let(:group) { create(:enterprise_group) }
+      let(:invalid_file) { Rack::Test::UploadedFile.new('spec/fixtures/files/logo.bmp', 'image/bmp') }
+
+      shared_examples "an attachment validated only when changed" do |attachment|
+        context "when the #{attachment} has not changed" do
+          before do
+            # Persist an already-invalid attachment, bypassing validation, to
+            # mimic a pre-existing problematic blob
+            group.public_send(attachment).attach(invalid_file)
+            group.save!(validate: false)
+            group.reload
+          end
+
+          it "does not re-validate the unchanged #{attachment} on an unrelated update" do
+            expect(group.attachment_changes).to be_empty
+            expect(group.update(name: 'New name')).to be true
+          end
+        end
+
+        context "when the #{attachment} is changed" do
+          it "runs the #{attachment} validation on the new file" do
+            group.public_send(attachment).attach(invalid_file)
+
+            expect(group.attachment_changes).to have_key(attachment.to_s)
+            expect(group).not_to be_valid
+            expect(group.errors[attachment]).to be_present
+          end
+        end
+      end
+
+      it_behaves_like "an attachment validated only when changed", :logo
+      it_behaves_like "an attachment validated only when changed", :promo_image
+    end
   end
 
   describe "relations" do

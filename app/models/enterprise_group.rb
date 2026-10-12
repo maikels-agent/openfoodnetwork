@@ -30,10 +30,12 @@ class EnterpriseGroup < ApplicationRecord
 
   validates :logo,
             processable_file: true,
-            content_type: ::Spree::Image::ACCEPTED_CONTENT_TYPES
+            content_type: ::Spree::Image::ACCEPTED_CONTENT_TYPES,
+            if: -> { attachment_changed?(:logo) }
   validates :promo_image,
             processable_file: true,
-            content_type: ::Spree::Image::ACCEPTED_CONTENT_TYPES
+            content_type: ::Spree::Image::ACCEPTED_CONTENT_TYPES,
+            if: -> { attachment_changed?(:promo_image) }
 
   scope :by_position, -> { order('position ASC') }
   scope :on_front_page, -> { where(on_front_page: true) }
@@ -80,6 +82,13 @@ class EnterpriseGroup < ApplicationRecord
   end
 
   private
+
+  # True when the named attachment was added, replaced or removed in the current
+  # save. Used to skip validation (and the blob download it triggers) for
+  # attachments that have not changed.
+  def attachment_changed?(name)
+    attachment_changes.key?(name.to_s)
+  end
 
   def sanitize_permalink
     return unless permalink.blank? || permalink_changed?
