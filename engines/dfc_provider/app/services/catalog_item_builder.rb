@@ -23,10 +23,12 @@ class CatalogItemBuilder < DfcBuilder
     end
   end
 
+  # The DFC sees "empty" stock as unlimited, like we export it in
+  # `DfcBuilder.stock_limitation`. Some platforms use a negative value.
   def self.apply_stock(item, variant)
-    limit = item&.stockLimitation
+    return if item.nil?
 
-    return if limit.blank?
+    limit = item.stockLimitation
 
     if variant.stock_items.empty?
       variant.stock_items << Spree::StockItem.new(
@@ -34,7 +36,7 @@ class CatalogItemBuilder < DfcBuilder
       )
     end
 
-    if limit.to_i.negative?
+    if limit.blank? || limit.to_i.negative?
       variant.stock_items[0].backorderable = true
     else
       variant.stock_items[0].backorderable = false

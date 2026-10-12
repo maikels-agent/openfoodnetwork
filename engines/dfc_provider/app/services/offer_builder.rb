@@ -19,7 +19,9 @@ class OfferBuilder < DfcBuilder
   def self.apply(offer, variant)
     return if offer.nil?
 
-    CatalogItemBuilder.apply_stock(offer, variant)
+    # Our offers carry the same stock limitation as their catalog item but
+    # other platforms leave it empty. Then the catalog item defines the stock.
+    CatalogItemBuilder.apply_stock(offer, variant) if offer.stockLimitation.present?
 
     return if offer.price.nil?
 
