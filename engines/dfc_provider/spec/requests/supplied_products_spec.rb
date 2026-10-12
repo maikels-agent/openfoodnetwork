@@ -29,6 +29,34 @@ RSpec.describe "SuppliedProducts", swagger_doc: "dfc.yaml" do
     )
   }
 
+  let(:supplied_product_graph) do
+    # The DFC Connector returns all typed nodes in the order given.
+    # The SuppliedProduct is not the first one here.
+    {
+      '@context': "https://www.datafoodconsortium.org",
+      '@graph': [
+        {
+          '@id': "http://test.host/api/dfc/enterprises/10000/catalog_items/0",
+          '@type': "dfc-b:CatalogItem",
+          'dfc-b:references': "http://test.host/api/dfc/enterprises/10000/supplied_products/0",
+          'dfc-b:stockLimitation': 3,
+        },
+        {
+          '@id': "http://test.host/api/dfc/enterprises/10000/supplied_products/0",
+          '@type': "dfc-b:SuppliedProduct",
+          'dfc-b:name': "Apple",
+          'dfc-b:hasType': "dfc-pt:non-local-vegetable",
+          'dfc-b:referencedBy': "http://test.host/api/dfc/enterprises/10000/catalog_items/0",
+          'dfc-b:hasQuantity': {
+            '@type': "dfc-b:QuantitativeValue",
+            'dfc-b:hasUnit': "dfc-m:Gram",
+            'dfc-b:value': 3.0
+          },
+        },
+      ]
+    }
+  end
+
   let!(:non_local_vegetable) {
     create(
       :taxon,
@@ -146,6 +174,18 @@ RSpec.describe "SuppliedProducts", swagger_doc: "dfc.yaml" do
       response "200", "success" do
         let(:supplied_product) do |example|
           example.metadata[:operation][:parameters].first[:schema][:example]
+        end
+
+        context "with the SuppliedProduct not first in the graph" do
+          let(:supplied_product) { supplied_product_graph }
+
+          it "finds the SuppliedProduct in a graph" do |example|
+            expect { submit_request(example.metadata) }
+              .to change { enterprise.products.count }.by(1)
+
+            expect(response).to have_http_status :ok
+            expect(json_response["dfc-b:name"]).to start_with "Apple"
+          end
         end
 
         it "creates a product and variant" do |example|
@@ -305,6 +345,20 @@ RSpec.describe "SuppliedProducts", swagger_doc: "dfc.yaml" do
             .and change { variant.display_name }.to("Pesto novo")
             .and change { variant.unit_value }.to(17)
             .and change { variant.primary_taxon }.to(drink_taxon)
+        end
+
+        context "with the SuppliedProduct not first in the graph" do
+          let(:supplied_product) { supplied_product_graph }
+
+          it "finds the SuppliedProduct in a graph" do |example|
+            expect {
+              submit_request(example.metadata)
+              variant.reload
+            }.to change { variant.display_name }.to("Apple")
+              .and change { variant.on_hand }.to(3)
+
+            expect(response).to have_http_status :no_content
+          end
         end
       end
     end

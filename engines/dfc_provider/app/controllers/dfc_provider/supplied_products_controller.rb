@@ -37,7 +37,7 @@ module DfcProvider
     end
 
     def create
-      supplied_product = import&.first
+      supplied_product = import("dfc-b:SuppliedProduct")
 
       return head :bad_request unless supplied_product
 
@@ -51,7 +51,7 @@ module DfcProvider
     end
 
     def update
-      supplied_product = import&.first
+      supplied_product = import("dfc-b:SuppliedProduct")
 
       return head :bad_request unless supplied_product
 

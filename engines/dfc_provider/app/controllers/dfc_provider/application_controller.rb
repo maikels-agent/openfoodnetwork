@@ -74,8 +74,11 @@ module DfcProvider
       @profile ||= request.headers["Accept"][/\bprofile="?([^";,\s]+)"?/, 1]
     end
 
-    def import
-      DfcIo.import(request.body)
+    # Find the first subject of the given type in the request body.
+    def import(semantic_type)
+      DfcIo.import(request.body).find do |subject|
+        subject.semanticType == semantic_type
+      end
     end
 
     # Checks weather a feature is enabled for any of the given actors.

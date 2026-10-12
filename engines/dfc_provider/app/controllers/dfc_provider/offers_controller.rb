@@ -10,7 +10,7 @@ module DfcProvider
     end
 
     def update
-      offer = import
+      offer = import("dfc-b:Offer")
 
       return head :bad_request unless offer
 

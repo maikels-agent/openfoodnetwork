@@ -49,8 +49,23 @@ RSpec.describe DfcIo do
   end
 
   describe ".import" do
-    it "recognises loaded vocabularies" do
+    it "returns an Array for a single subject" do
       result = DfcIo.import(DfcIo.export(order))
+
+      expect(result).to be_an Array
+      expect(result.map(&:semanticType)).to eq ["dfc-b:Order"]
+    end
+
+    it "returns an Array for multiple subjects" do
+      line = DataFoodConsortium::ConnectorV1::OrderLine.new("https://example.net/line")
+      order.lines << line
+      result = DfcIo.import(DfcIo.export(order, line))
+
+      expect(result.map(&:semanticType)).to match_array ["dfc-b:Order", "dfc-b:OrderLine"]
+    end
+
+    it "recognises loaded vocabularies" do
+      result = DfcIo.import(DfcIo.export(order)).first
 
       expect(result.orderStatus).to eq orderstate.HELD
     end

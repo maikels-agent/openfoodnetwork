@@ -48,7 +48,7 @@ RSpec.describe "Offers", swagger_doc: "dfc.yaml" do
 
       let(:id) { variant.id }
       let(:offer) { |example|
-        example.metadata[:operation][:parameters].first[:schema][:example]
+        example.metadata[:operation][:parameters].first[:schema][:example].dup
       }
 
       response "204", "success" do
@@ -58,6 +58,28 @@ RSpec.describe "Offers", swagger_doc: "dfc.yaml" do
             variant.reload
           }.to change { variant.price }.to(9.99)
             .and change { variant.on_hand }.to(7)
+        end
+
+        context "with a typed price like in our own Offer" do
+          # The DFC Connector returns an Array when there are several typed
+          # nodes. The Price is a separate subject then.
+          before do
+            offer[:'dfc-b:hasPrice'] = {
+              '@type': "dfc-b:Price",
+              'dfc-b:value': 9.99,
+              'dfc-b:hasUnit': "dfc-m:AustralianDollar",
+            }
+          end
+
+          it "updates a variant" do |example|
+            expect {
+              submit_request(example.metadata)
+              variant.reload
+            }.to change { variant.price }.to(9.99)
+              .and change { variant.on_hand }.to(7)
+
+            expect(response).to have_http_status :no_content
+          end
         end
       end
     end
