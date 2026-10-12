@@ -85,6 +85,14 @@ RSpec.describe SuppliedProductImporter do
       expect(subject.on_demand).to eq false
       expect(subject.on_hand).to eq 11
     end
+
+    it "keeps the category when the product type is unknown" do
+      create(:taxon) # The fallback category of new products.
+      variant
+
+      expect(product.productType).to eq nil
+      expect { subject }.not_to change { variant.reload.primary_taxon }.from(taxon)
+    end
   end
 
   describe ".import_product" do
