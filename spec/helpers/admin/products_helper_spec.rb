@@ -392,4 +392,21 @@ RSpec.describe Admin::ProductsHelper do
       end
     end
   end
+
+  describe '#variants_in_shopfront_order' do
+    let(:product) { create(:product, name: "Apples") }
+
+    it "sorts by name first, then by unit value, like the shopfront" do
+      product.variants.first.update!(display_name: "", unit_value: 1000)
+      create(:variant, product:, display_name: "Zesty", unit_value: 100)
+      create(:variant, product:, display_name: "", unit_value: 500)
+      create(:variant, product:, display_name: "banana", unit_value: 2000)
+
+      result = helper.variants_in_shopfront_order(product.reload)
+
+      expect(result.map { |v| [v.name_to_display, v.unit_value] }).to eq [
+        ["Apples", 500], ["Apples", 1000], ["banana", 2000], ["Zesty", 100]
+      ]
+    end
+  end
 end

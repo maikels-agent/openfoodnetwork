@@ -145,6 +145,15 @@ module Admin
       variant&.display_name.present? ? "#{resource_name} - #{variant.display_name}" : resource_name
     end
 
+    # Same order as the shopfront, which sorts with Angular's
+    # `orderBy: ['name_to_display','unit_value']`: case-insensitive name first, then unit value,
+    # with missing unit values first.
+    def variants_in_shopfront_order(product)
+      product.variants.sort_by do |variant|
+        [variant.name_to_display.to_s.downcase, variant.unit_value ? 1 : 0, variant.unit_value.to_f]
+      end
+    end
+
     private
 
     def copy_template_fields(template, new_variant)
