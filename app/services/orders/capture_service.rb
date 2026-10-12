@@ -13,7 +13,7 @@ module Orders
 
     def call
       return false unless @order.payment_required?
-      return false unless (pending_payment = @order.pending_payments.first)
+      return false unless (pending_payment = @order.pending_payments.find(&:capturable?))
 
       pending_payment.capture!
     rescue Spree::Core::GatewayError => e

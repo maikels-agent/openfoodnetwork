@@ -161,6 +161,11 @@ module Spree
       end
     end
 
+    # Some payment methods, like customer credit, can't be captured.
+    def capturable?
+      actions.include?("capture_and_complete_order")
+    end
+
     def resend_authorization_email!
       return unless requires_authorization?
 

@@ -893,6 +893,36 @@ RSpec.describe Spree::Payment do
       end
     end
 
+    describe "#capturable?" do
+      it "is true for a pending payment with a capturable payment method" do
+        payment = build_stubbed(:payment, state: "pending",
+                                          payment_method: Spree::PaymentMethod::Check.new)
+
+        expect(payment.capturable?).to be true
+      end
+
+      it "is false for a completed payment" do
+        payment = build_stubbed(:payment, state: "completed",
+                                          payment_method: Spree::PaymentMethod::Check.new)
+
+        expect(payment.capturable?).to be false
+      end
+
+      it "is false for a payment requiring authorization" do
+        payment = build_stubbed(:payment, state: "requires_authorization",
+                                          payment_method: Spree::Gateway::StripeSCA.new)
+
+        expect(payment.capturable?).to be false
+      end
+
+      it "is false for an incomplete customer credit payment" do
+        payment = build_stubbed(:payment, state: "checkout",
+                                          payment_method: Spree::PaymentMethod::CustomerCredit.new)
+
+        expect(payment.capturable?).to be false
+      end
+    end
+
     describe "refund!" do
       let(:payment) { create(:payment) }
       let(:success) { double(success?: true, authorization: 'abc123') }
