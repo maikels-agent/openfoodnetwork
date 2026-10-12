@@ -34,6 +34,36 @@ RSpec.describe QuantitativeValueBuilder do
       expect(quantity.unit.semanticId).to eq "dfc-m:Gram"
     end
 
+    it "uses the unit of the variant's scale" do
+      variant.variant_unit = "weight"
+      variant.variant_unit_scale = 1000
+      variant.unit_value = 1500 # 1.5kg
+      quantity = builder.quantity(variant)
+
+      expect(quantity.value).to eq 1.5
+      expect(quantity.unit.semanticId).to eq "dfc-m:Kilogram"
+    end
+
+    it "uses the unit of the variant's small scale" do
+      variant.variant_unit = "volume"
+      variant.variant_unit_scale = 0.001
+      variant.unit_value = 0.33 # 330mL
+      quantity = builder.quantity(variant)
+
+      expect(quantity.value).to eq 330
+      expect(quantity.unit.semanticId).to eq "dfc-m:Millilitre"
+    end
+
+    it "falls back to the base unit for scales unknown to the DFC" do
+      variant.variant_unit = "weight"
+      variant.variant_unit_scale = 28.35 # oz
+      variant.unit_value = 56.7
+      quantity = builder.quantity(variant)
+
+      expect(quantity.value).to eq 56.7
+      expect(quantity.unit.semanticId).to eq "dfc-m:Gram"
+    end
+
     it "falls back to items" do
       variant.variant_unit = nil
       quantity = builder.quantity(variant)

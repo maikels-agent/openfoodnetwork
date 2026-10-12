@@ -9,10 +9,43 @@
 # The DFC also supports specific units like loafs and cans but we don't have
 # standardised data within OFN to map to these types.
 class QuantitativeValueBuilder < DfcBuilder
+  # OFN unit scales which have an equivalent DFC measure.
+  # Exporting in the variant's scale preserves it when importing again.
+  SCALED_UNITS = {
+    "weight" => {
+      0.001 => :MILLIGRAM,
+      1.0 => :GRAM,
+      1_000.0 => :KILOGRAM,
+      1_000_000.0 => :TONNE,
+      453.59237 => :POUNDMASS,
+    },
+    "volume" => {
+      0.001 => :MILLILITRE,
+      0.01 => :CENTILITRE,
+      0.1 => :DECILITRE,
+      1.0 => :LITRE,
+      4.54609 => :GALLON,
+    },
+  }.freeze
+
   def self.quantity(variant)
+    measure = SCALED_UNITS.dig(variant.variant_unit, variant.variant_unit_scale.to_f)
+
+    if measure && variant.unit_value.present?
+      scaled_quantity(variant, measure)
+    else
+      DataFoodConsortium::ConnectorV1::QuantitativeValue.new(
+        unit: unit(variant.variant_unit),
+        value: variant.unit_value,
+      )
+    end
+  end
+
+  def self.scaled_quantity(variant, measure)
     DataFoodConsortium::ConnectorV1::QuantitativeValue.new(
-      unit: unit(variant.variant_unit),
-      value: variant.unit_value,
+      unit: DfcLoader.connector.MEASURES.public_send(measure),
+      # Avoid float artefacts like 0.30000000000000004:
+      value: (variant.unit_value / variant.variant_unit_scale.to_f).round(10),
     )
   end
 

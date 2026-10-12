@@ -51,4 +51,58 @@ RSpec.describe "DFC catalog round trip" do
       expect(imported_variant.price).to eq 3.50
     end
   end
+
+  describe "units" do
+    let(:variant) do
+      create(:variant, enterprise:, variant_unit:, variant_unit_scale:, unit_value:)
+    end
+
+    context "in grams" do
+      let(:variant_unit) { "weight" }
+      let(:variant_unit_scale) { 1 }
+      let(:unit_value) { 500 }
+
+      it "preserves the unit scale" do
+        expect(imported_variant.variant_unit).to eq "weight"
+        expect(imported_variant.variant_unit_scale).to eq 1
+        expect(imported_variant.unit_value).to eq 500
+      end
+    end
+
+    context "in kilograms" do
+      let(:variant_unit) { "weight" }
+      let(:variant_unit_scale) { 1_000 }
+      let(:unit_value) { 1_500 }
+
+      it "preserves the unit scale" do
+        expect(imported_variant.variant_unit).to eq "weight"
+        expect(imported_variant.variant_unit_scale).to eq 1_000
+        expect(imported_variant.unit_value).to eq 1_500
+      end
+    end
+
+    context "in millilitres" do
+      let(:variant_unit) { "volume" }
+      let(:variant_unit_scale) { 0.001 }
+      let(:unit_value) { 0.33 }
+
+      it "preserves the unit scale" do
+        expect(imported_variant.variant_unit).to eq "volume"
+        expect(imported_variant.variant_unit_scale).to eq 0.001
+        expect(imported_variant.unit_value).to eq 0.33
+      end
+    end
+
+    context "in litres" do
+      let(:variant_unit) { "volume" }
+      let(:variant_unit_scale) { 1 }
+      let(:unit_value) { 2 }
+
+      it "preserves the unit scale" do
+        expect(imported_variant.variant_unit).to eq "volume"
+        expect(imported_variant.variant_unit_scale).to eq 1
+        expect(imported_variant.unit_value).to eq 2
+      end
+    end
+  end
 end
