@@ -114,9 +114,9 @@ class SuppliedProductImporter < DfcBuilder
   def self.apply(supplied_product, variant)
     ProductGroupBuilder.apply(supplied_product, variant.product)
 
-    variant.display_name = supplied_product.name
     variant.primary_taxon = taxon(supplied_product)
     QuantitativeValueBuilder.apply(supplied_product.quantity, variant)
+    variant.display_name = VariantNameImporter.display_name(supplied_product.name, variant)
 
     catalog_item = supplied_product&.catalogItems&.first
     offer = catalog_item&.offers&.first

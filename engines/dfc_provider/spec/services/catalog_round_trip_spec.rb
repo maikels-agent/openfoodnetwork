@@ -51,4 +51,59 @@ RSpec.describe "DFC catalog round trip" do
       expect(imported_variant.price).to eq 3.50
     end
   end
+
+  describe "names" do
+    let(:product) { create(:product, name: "Apples", enterprise_id: enterprise.id) }
+    let(:variant) do
+      create(:variant, product:, enterprise:, display_name:, unit_value: 500)
+    end
+
+    context "without variant name" do
+      let(:display_name) { nil }
+
+      it "preserves the product name and leaves the variant name blank" do
+        expect(imported_variant.product.name).to eq "Apples"
+        expect(imported_variant.display_name).to eq nil
+
+        imported_variant.save! # assigns unit presentation
+        expect(imported_variant.product_and_full_name).to eq "Apples - 500g"
+      end
+    end
+
+    context "with variant name" do
+      let(:display_name) { "Granny Smith" }
+
+      it "preserves the variant name" do
+        expect(imported_variant.product.name).to eq "Apples"
+        expect(imported_variant.display_name).to eq "Granny Smith"
+
+        imported_variant.save! # assigns unit presentation
+        expect(imported_variant.product_and_full_name)
+          .to eq "Apples - Granny Smith (500g)"
+      end
+    end
+
+    context "imported as new product" do
+      subject(:imported_variant) do
+        SuppliedProductImporter.import_variant(
+          imported_product, create(:supplier_enterprise)
+        )
+      end
+      let(:display_name) { "Granny Smith" }
+
+      it "preserves product name and variant name" do
+        expect(imported_variant.product).not_to eq product
+        expect(imported_variant.product.name).to eq "Apples"
+        expect(imported_variant.display_name).to eq "Granny Smith"
+      end
+    end
+
+    context "with variant name containing the unit" do
+      let(:display_name) { "Granny Smith 500g" }
+
+      it "preserves the variant name" do
+        expect(imported_variant.display_name).to eq "Granny Smith 500g"
+      end
+    end
+  end
 end
