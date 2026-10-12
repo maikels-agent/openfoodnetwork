@@ -11,10 +11,13 @@ module Spree
       attachment.variant :large, resize_to_limit: [600, 600]
     end
 
+    validates :attachment, attached: true
+    # Only check the file itself when it changes. Checking an unchanged attachment downloads the
+    # blob on every update.
     validates :attachment,
-              attached: true,
               processable_file: true,
-              content_type: ACCEPTED_CONTENT_TYPES
+              content_type: ACCEPTED_CONTENT_TYPES,
+              if: -> { attachment_changes.key?("attachment") }
     validate :no_attachment_errors
 
     def self.default_image_url(size)

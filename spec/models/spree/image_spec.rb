@@ -121,3 +121,23 @@ module Spree
     end
   end
 end
+
+RSpec.describe Spree::Image, "attachment validation" do
+  include FileHelper
+
+  subject { Spree::Image.create!(attachment: black_logo_file, viewable: create(:product)) }
+
+  let(:bmp_file) { Rack::Test::UploadedFile.new('spec/fixtures/files/logo.bmp', 'image/bmp') }
+
+  it "doesn't re-validate an unchanged attachment" do
+    subject.attachment.attach(bmp_file)
+    subject.save!(validate: false)
+
+    expect(subject.reload.update(alt: "New caption")).to be true
+  end
+
+  it "validates a new attachment" do
+    subject.attachment.attach(bmp_file)
+    expect(subject).not_to be_valid
+  end
+end
