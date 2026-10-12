@@ -77,15 +77,25 @@ RSpec.describe Api::V0::ShipmentsController do
         expect(order.reload.line_items.first.variant.price).to eq(variant.price)
       end
 
-      it 'updates and returns exiting shipment, if order already has a shipment' do
+      it 'updates exiting shipment, if order already has a shipment' do
+        spree_post :create, params
+
+        expect_valid_response
+        expect(order.shipment.reload.inventory_units.size).to eq 2
+        expect(order.reload.line_items.first.variant.price).to eq(variant.price)
+      end
+
+      it "returns the order's current shipment when advancing the order recreates it" do
         original_shipment_id = order.shipment.id
 
         spree_post :create, params
 
-        expect(json_response["id"]).to eq(original_shipment_id)
+        expect(Spree::Shipment.exists?(original_shipment_id)).to be false
+
         expect_valid_response
-        expect(order.shipment.reload.inventory_units.size).to eq 2
-        expect(order.reload.line_items.first.variant.price).to eq(variant.price)
+        expect(Spree::Shipment.exists?(json_response["id"])).to be true
+        expect(json_response["id"]).to eq order.reload.shipment.id
+        expect(json_response["number"]).to eq order.shipment.number
       end
 
       it 'updates existing shipment with variant override if an VO is sent', feature: :inventory do

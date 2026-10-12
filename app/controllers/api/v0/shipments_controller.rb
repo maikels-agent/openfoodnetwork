@@ -27,6 +27,9 @@ module Api
         @order.recreate_all_fees!
         AmendBackorderJob.perform_later(@order) if @order.completed?
 
+        # Advancing the order may have replaced the shipment we started with.
+        @shipment = @order.reload.shipment
+
         render json: @shipment, serializer: Api::ShipmentSerializer, status: :ok
       end
 
