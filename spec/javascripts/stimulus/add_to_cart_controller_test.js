@@ -192,6 +192,47 @@ describe("AddToCartController", () => {
     });
   });
 
+  // The AngularJS shopfront keeps the cart while it shows a product page over its list.
+  describe("on a page with a cart of its own", () => {
+    const takeOver = (event) => {
+      if (event.type === "add-to-cart:connect") event.detail.quantity = 2;
+      if (event.type === "add-to-cart:change") event.preventDefault();
+    };
+
+    beforeEach(async () => {
+      document.addEventListener("add-to-cart:connect", takeOver);
+      document.addEventListener("add-to-cart:change", takeOver);
+      document.body.innerHTML = htmlTemplate();
+      await flushPromises();
+    });
+
+    afterEach(() => {
+      document.removeEventListener("add-to-cart:connect", takeOver);
+      document.removeEventListener("add-to-cart:change", takeOver);
+    });
+
+    it("starts with the quantity that cart has", () => {
+      expect(input().value).toEqual("2");
+      expect(document.getElementById("itemInCart").textContent).toEqual("2 in cart");
+    });
+
+    it("leaves saving to that cart", async () => {
+      const changes = [];
+      const recordChange = (event) => changes.push(event.detail);
+      document.addEventListener("add-to-cart:change", recordChange);
+
+      document.getElementById("plus").click();
+      jest.advanceTimersByTime(1000);
+      await flushPromises();
+
+      expect(changes).toEqual([{ variantId: 10, quantity: 3 }]);
+      expect(input().value).toEqual("3");
+      expect(global.fetch).not.toHaveBeenCalled();
+
+      document.removeEventListener("add-to-cart:change", recordChange);
+    });
+  });
+
   describe("on demand variants", () => {
     it("allows any quantity", async () => {
       document.body.innerHTML = htmlTemplate(0, "Infinity");

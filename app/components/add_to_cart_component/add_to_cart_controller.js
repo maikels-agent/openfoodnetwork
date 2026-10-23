@@ -11,6 +11,11 @@ import showHttpError from "js/services/show_http_error";
 //
 // Dispatches "cart:updating" and "cart:settled" window events so the
 // cart-sidebar controller can show the busy state while saving.
+//
+// A page with a cart of its own, like the AngularJS shopfront showing a
+// product page over its list, can take over: it answers "add-to-cart:connect"
+// with the quantity it has and cancels "add-to-cart:change" to save the
+// change itself.
 export default class extends Controller {
   static targets = [
     "addButton",
@@ -35,6 +40,11 @@ export default class extends Controller {
   }
 
   connect() {
+    const { detail } = this.dispatch("connect", {
+      detail: { variantId: this.variantIdValue, quantity: null },
+    });
+    if (detail.quantity !== null) this.quantityTarget.value = detail.quantity;
+
     this.lastQuantity = this.quantity;
     this.render();
   }
@@ -76,6 +86,13 @@ export default class extends Controller {
 
     this.lastQuantity = clamped;
     this.render();
+
+    const change = this.dispatch("change", {
+      detail: { variantId: this.variantIdValue, quantity: clamped },
+      cancelable: true,
+    });
+    if (change.defaultPrevented) return;
+
     this.scheduleSave();
   }
 
