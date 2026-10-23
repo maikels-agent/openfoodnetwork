@@ -150,7 +150,12 @@
       }
     }
 
+    // Repeats .large-3 so that it still wins over .medium-4 above.
     @media only screen and (min-width: 64.0625em) {
+      .large-3 {
+        width: 25%;
+      }
+
       .large-9 {
         width: 75%;
       }
@@ -160,6 +165,7 @@
       float: left;
     }
 
+    .product-body::after,
     .variant-list .row::after {
       content: "";
       display: table;
