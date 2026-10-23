@@ -1,4 +1,5 @@
--# locals: (product:, product_view:)
+-# locals: (product:, product_view:, preview: false)
+-# The admin preview has no shop, order cycle or cart. It shows every variant without fees.
 - available_variant_ids = product_view&.variants&.map(&:id)
 .row
   .columns.product-header
@@ -20,7 +21,9 @@
     - has_images = product_carousel_images?(product, available_variant_ids:)
     = render ThumbnailCarouselComponent.new(images: carousel_images, class: (has_images ? nil : "placeholder"))
   .columns.small-12.medium-8.large-9.product-variants
-    - if product_view
+    - if preview
+      = render ShopVariantListComponent.new(product: product_view, variants_in_cart: {}, low_stock_display: nil, preview: true)
+    - elsif product_view
       = render ShopVariantListComponent.new(product: product_view, variants_in_cart: @variants_in_cart, low_stock_display: @low_stock_display, cart_params: { enterprise_permalink: @enterprise.permalink, order_cycle_id: @order_cycle.id })
     - elsif @order_cycles.many?
       %p.no-variants= t("products_choose_order_cycle")
