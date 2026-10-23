@@ -54,6 +54,7 @@ module Admin
         display_price_with_fees: Spree::Money.new(variant.price).to_s,
         unit_price:,
         display_unit_price: Spree::Money.new(variant.price / (unit_price.denominator || 1)).to_s,
+        fees: [],
         product: ViewData::SimpleProduct.new(id: @product.id, name: @product.name)
       )
     end

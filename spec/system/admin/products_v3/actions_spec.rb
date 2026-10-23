@@ -595,7 +595,7 @@ RSpec.describe 'As an enterprise user, I can perform actions on the products scr
 
           within "#product-preview-modal" do
             expect(page).to have_content("Product preview")
-            expect(page).to have_selector(".product-header h3", text: "Apples")
+            expect(page).to have_selector(".product-page-header h3", text: "Apples")
             expect(page).to have_selector(".product-images")
             expect(page).to have_selector(".variant-list li", count: 2)
             expect(page).to have_selector(".variant-name", text: "Big box")
