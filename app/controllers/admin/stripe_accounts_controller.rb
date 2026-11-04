@@ -21,11 +21,10 @@ module Admin
         flash[:error] = I18n.t('stripe.error_code.disconnect_failure')
       end
 
-      redirect_to main_app.edit_admin_enterprise_path(stripe_account.enterprise),
-                  status: :see_other
+      redirect_to main_app.edit_admin_enterprise_path(stripe_account.enterprise)
     rescue ActiveRecord::RecordNotFound
       flash[:error] = I18n.t('stripe.error_code.disconnect_failure')
-      redirect_to admin_dashboard_path, status: :see_other
+      redirect_to admin_dashboard_path
     end
 
     def status

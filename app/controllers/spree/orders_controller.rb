@@ -6,6 +6,7 @@ module Spree
     include Rails.application.routes.url_helpers
     include CablecarResponses
     include WhiteLabel
+    include FullPageRedirects
 
     layout 'darkswarm'
 
@@ -39,7 +40,7 @@ module Spree
         @order.empty!
       end
 
-      redirect_to main_app.cart_path, status: :see_other
+      redirect_to main_app.cart_path
     end
 
     # Patching to redirect to shop if order is empty

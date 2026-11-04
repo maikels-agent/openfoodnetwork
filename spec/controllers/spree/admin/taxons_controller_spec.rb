@@ -37,7 +37,7 @@ RSpec.describe Spree::Admin::TaxonsController do
         spree_post :create, valid_attributes
 
         expect(Spree::Taxon.last.name).to eq valid_attributes[:name]
-        expect(response).to have_http_status :found
+        expect(response).to have_http_status :see_other
       end
 
       it "returns error with invalid attributes" do
@@ -55,7 +55,7 @@ RSpec.describe Spree::Admin::TaxonsController do
                             taxon: valid_attributes.merge({ name: 'Taxon name updated' })
 
         expect(new_taxon.reload.name).to eq 'Taxon name updated'
-        expect(response).to have_http_status :found
+        expect(response).to have_http_status :see_other
       end
 
       it "returns error with invalid attributes" do
