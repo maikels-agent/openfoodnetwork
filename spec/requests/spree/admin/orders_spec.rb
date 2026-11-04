@@ -43,7 +43,7 @@ RSpec.describe Spree::Admin::OrdersController do
       it "does not throw an error if no order object is given in params" do
         put "/admin/orders/#{order.number}"
 
-        expect(response).to have_http_status :found
+        expect(response).to have_http_status :see_other
       end
 
       context "recalculating fees and taxes" do
@@ -395,7 +395,7 @@ RSpec.describe Spree::Admin::OrdersController do
 
         put("/admin/orders/#{order.number}/capture", params: { format: :turbo_stream })
 
-        expect(response).to redirect_to "/unauthorized"
+        expect(response).to full_page_redirect_to "/unauthorized"
       end
     end
   end
@@ -430,7 +430,7 @@ RSpec.describe Spree::Admin::OrdersController do
           params: { bulk_ids: [order.id], format: :turbo_stream }
         )
 
-        expect(response).to redirect_to "/unauthorized"
+        expect(response).to full_page_redirect_to "/unauthorized"
       end
     end
   end
@@ -480,7 +480,7 @@ RSpec.describe Spree::Admin::OrdersController do
           params: { bulk_ids: [order.id], format: :turbo_stream }
         )
 
-        expect(response).to redirect_to "/unauthorized"
+        expect(response).to full_page_redirect_to "/unauthorized"
       end
     end
   end

@@ -16,6 +16,7 @@ module Spree
       layout 'spree/layouts/admin'
 
       include I18nHelper
+      include FullPageRedirects
 
       before_action :authorize_admin
       before_action :set_locale

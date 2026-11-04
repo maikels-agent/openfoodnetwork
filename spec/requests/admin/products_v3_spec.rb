@@ -15,7 +15,7 @@ RSpec.describe "Admin::ProductsV3" do
     it "checks for permission" do
       delete(admin_product_destroy_path(product), headers: )
 
-      expect(response).to redirect_to('/unauthorized')
+      expect(response).to full_page_redirect_to('/unauthorized')
     end
   end
 
@@ -23,7 +23,7 @@ RSpec.describe "Admin::ProductsV3" do
     it "checks for permission" do
       post(admin_clone_product_path(product), headers: )
 
-      expect(response).to redirect_to('/unauthorized')
+      expect(response).to full_page_redirect_to('/unauthorized')
     end
   end
 
@@ -31,7 +31,7 @@ RSpec.describe "Admin::ProductsV3" do
     it "checks for permission" do
       delete(admin_destroy_variant_path(product.variants.first), headers: )
 
-      expect(response).to redirect_to('/unauthorized')
+      expect(response).to full_page_redirect_to('/unauthorized')
     end
   end
 
@@ -56,7 +56,7 @@ RSpec.describe "Admin::ProductsV3" do
 
       post(admin_products_bulk_update_path, params:, headers: )
 
-      expect(response).to redirect_to('/unauthorized')
+      expect(response).to full_page_redirect_to('/unauthorized')
     end
   end
 
@@ -76,7 +76,7 @@ RSpec.describe "Admin::ProductsV3" do
 
       expect {
         post(admin_create_linked_variant_path, as: :turbo_stream, params:)
-        expect(response).to redirect_to('/unauthorized')
+        expect(response).to full_page_redirect_to('/unauthorized')
       }.not_to change { variant.product.variants.count }
     end
 

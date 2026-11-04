@@ -6,6 +6,7 @@ module Spree
     include Rails.application.routes.url_helpers
     include CablecarResponses
     include WhiteLabel
+    include FullPageRedirects
 
     layout 'darkswarm'
 
