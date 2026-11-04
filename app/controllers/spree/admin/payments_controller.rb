@@ -70,7 +70,7 @@ module Spree
         Alert.raise(e)
         flash[:error] = e.message
       ensure
-        redirect_to request.referer, status: :see_other
+        redirect_to request.referer
       end
 
       def paypal_refund

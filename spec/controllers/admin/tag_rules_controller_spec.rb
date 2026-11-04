@@ -18,7 +18,7 @@ RSpec.describe Admin::TagRulesController do
 
       it "redirects to unauthorized" do
         spree_delete :destroy, params
-        expect(response).to redirect_to unauthorized_path
+        expect(response).to full_page_redirect_to unauthorized_path
       end
     end
 

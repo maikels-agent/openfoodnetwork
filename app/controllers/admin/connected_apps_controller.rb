@@ -2,6 +2,8 @@
 
 module Admin
   class ConnectedAppsController < ApplicationController
+    include FullPageRedirects
+
     def create
       authorize! :admin, enterprise
 

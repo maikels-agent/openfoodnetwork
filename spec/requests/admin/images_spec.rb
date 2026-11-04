@@ -26,7 +26,7 @@ RSpec.describe "/admin/products/:product_id/images" do
       }.to change{ product.image&.attachment&.filename.to_s }
 
       expect(response.status).to eq expected_http_status_code
-      if expected_http_status_code == 302
+      if expected_http_status_code == 303
         expect(response.location).to end_with edit_admin_product_path(product)
       end
 
@@ -75,7 +75,7 @@ RSpec.describe "/admin/products/:product_id/images" do
   describe "POST /admin/products/:product_id/images" do
     subject { post(admin_product_images_path(product), params:) }
 
-    it_behaves_like "updating images", 302
+    it_behaves_like "updating images", 303
     it_behaves_like "rejecting an invalid upload"
   end
 
@@ -242,7 +242,7 @@ RSpec.describe "/admin/products/:product_id/images" do
       patch(admin_product_image_path(product, product.image), params:)
     }
 
-    it_behaves_like "updating images", 302
+    it_behaves_like "updating images", 303
 
     context "with an invalid attachment" do
       include_context "with an invalid attachment"
@@ -272,7 +272,7 @@ RSpec.describe "/admin/products/:product_id/images" do
           product.reload
         }.not_to change { Spree::Image.count }
 
-        expect(response).to have_http_status(:found)
+        expect(response).to have_http_status(:see_other)
         expect(response).to redirect_to(edit_admin_product_path(product))
         expect(product.image.alt).to eq("Updated alt text")
         expect(product.image.caption).to eq("Updated caption")
@@ -373,7 +373,7 @@ RSpec.describe "/admin/products/:product_id/images" do
 
     it "redirects to the variant's edit page" do
       subject
-      expect(response).to have_http_status :found
+      expect(response).to have_http_status :see_other
       expect(response.location)
         .to end_with edit_admin_product_variant_path(product, variant)
     end
@@ -474,7 +474,7 @@ RSpec.describe "/admin/products/:product_id/images" do
 
     it "redirects to the variant's edit page" do
       subject
-      expect(response).to have_http_status :found
+      expect(response).to have_http_status :see_other
       expect(response.location)
         .to end_with edit_admin_product_variant_path(product, variant)
     end

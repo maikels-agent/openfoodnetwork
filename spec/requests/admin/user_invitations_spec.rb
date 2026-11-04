@@ -48,7 +48,7 @@ RSpec.describe "/admin/user_invitations" do
         format: :turbo_stream
       )
 
-      expect(response).to redirect_to unauthorized_path
+      expect(response).to full_page_redirect_to unauthorized_path
     end
   end
 end
