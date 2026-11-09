@@ -606,7 +606,7 @@ paths:
                       dfc-b:email: hello@example.org
                       dfc-b:websitePage: https://openfoodnetwork.org
                       dfc-b:hasSocialMedia: http://test.host/api/dfc/enterprises/10000/social_medias/facebook
-                      dfc-b:logo: http://test.host/rails/active_storage/url/logo.png
+                      dfc-b:logo: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NDYsInB1ciI6ImJsb2JfaWQifX0=--92955d6b47ed467a91fcbac51e4faf7f55b32de0/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzE4MCwxODBdLCJjcm9wIjpbMCwwLDE4MCwxODBdfSwicHVyIjoidmFyaWF0aW9uIn19--e1d8ec5dd54a6dd2bd38fe0d43ab4d15ecacf6d7/logo.png
                       dfc-b:name: Fred's Farm
                       dfc-b:hasDescription: This is an awesome enterprise
                       dfc-b:VATnumber: 123 456
@@ -615,8 +615,8 @@ paths:
                       dfc-b:hasMainContact: http://test.host/api/dfc/enterprises/10000#mainContact
                       ofn:long_description: "<p>Hello, world!</p><p>This is a paragraph.</p>"
                       ofn:contact_name: Fred Farmer
-                      ofn:logo_url: http://test.host/rails/active_storage/url/logo.png
-                      ofn:promo_image_url: http://test.host/rails/active_storage/url/promo.png
+                      ofn:logo_url: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NDYsInB1ciI6ImJsb2JfaWQifX0=--92955d6b47ed467a91fcbac51e4faf7f55b32de0/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzE4MCwxODBdLCJjcm9wIjpbMCwwLDE4MCwxODBdfSwicHVyIjoidmFyaWF0aW9uIn19--e1d8ec5dd54a6dd2bd38fe0d43ab4d15ecacf6d7/logo.png
+                      ofn:promo_image_url: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NDcsInB1ciI6ImJsb2JfaWQifX0=--a35921d285d6f3b4891d0ffc58409bea5ac1cd00/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzEyMDAsMjYwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--a1b24ad07d4a9c1c4dbd60f310781d0cafca040d/promo.png
                     - "@id": http://test.host/api/dfc/enterprises/10000#mainContact
                       "@type": dfc-b:Person
                       dfc-b:firstName: Fred
@@ -639,11 +639,11 @@ paths:
                         dfc-b:hasUnit: dfc-m:Gram
                         dfc-b:value: 1.0
                       dfc-b:referencedBy: http://test.host/api/dfc/enterprises/10000/catalog_items/10001
-                      dfc-b:image: http://test.host/rails/active_storage/url/logo-white.png
+                      dfc-b:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NDgsInB1ciI6ImJsb2JfaWQifX0=--d26071d4ad4b61287d2dd6e40ff6335950861491/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                       dfc-b:isVariantOf: http://test.host/api/dfc/product_groups/90000
                       ofn:spree_product_id: 90000
                       ofn:spree_product_uri: http://test.host/api/dfc/enterprises/10000?spree_product_id=90000
-                      ofn:image: http://test.host/rails/active_storage/url/logo-white.png
+                      ofn:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NDgsInB1ciI6ImJsb2JfaWQifX0=--d26071d4ad4b61287d2dd6e40ff6335950861491/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                     - "@id": http://test.host/api/dfc/enterprises/10000/catalog_items/10001
                       "@type": dfc-b:CatalogItem
                       dfc-b:references: http://test.host/api/dfc/enterprises/10000/supplied_products/10001
@@ -676,7 +676,7 @@ paths:
                       dfc-b:email: hello@example.org
                       dfc-b:websitePage: https://openfoodnetwork.org
                       dfc-b:hasSocialMedia: http://test.host/api/dfc/enterprises/10000/social_medias/facebook
-                      dfc-b:logo: http://test.host/rails/active_storage/url/logo.png
+                      dfc-b:logo: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NDksInB1ciI6ImJsb2JfaWQifX0=--943fffef4db82de5f0e6230317b7d1c8268b2bbb/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzE4MCwxODBdLCJjcm9wIjpbMCwwLDE4MCwxODBdfSwicHVyIjoidmFyaWF0aW9uIn19--e1d8ec5dd54a6dd2bd38fe0d43ab4d15ecacf6d7/logo.png
                       dfc-b:name: Fred's Farm
                       dfc-b:hasDescription: This is an awesome enterprise
                       dfc-b:VATnumber: 123 456
@@ -685,8 +685,8 @@ paths:
                       dfc-b:hasMainContact: http://test.host/api/dfc/enterprises/10000#mainContact
                       ofn:long_description: "<p>Hello, world!</p><p>This is a paragraph.</p>"
                       ofn:contact_name: Fred Farmer
-                      ofn:logo_url: http://test.host/rails/active_storage/url/logo.png
-                      ofn:promo_image_url: http://test.host/rails/active_storage/url/promo.png
+                      ofn:logo_url: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NDksInB1ciI6ImJsb2JfaWQifX0=--943fffef4db82de5f0e6230317b7d1c8268b2bbb/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzE4MCwxODBdLCJjcm9wIjpbMCwwLDE4MCwxODBdfSwicHVyIjoidmFyaWF0aW9uIn19--e1d8ec5dd54a6dd2bd38fe0d43ab4d15ecacf6d7/logo.png
+                      ofn:promo_image_url: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTAsInB1ciI6ImJsb2JfaWQifX0=--d2a59014e50535650301342957180fab3804d833/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzEyMDAsMjYwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--a1b24ad07d4a9c1c4dbd60f310781d0cafca040d/promo.png
                     - "@id": http://test.host/api/dfc/enterprises/10001#mainContact
                       "@type": dfc-b:Person
                     - "@id": http://test.host/api/dfc/enterprises/10000#mainContact
@@ -718,11 +718,11 @@ paths:
                         dfc-b:hasUnit: dfc-m:Gram
                         dfc-b:value: 1.0
                       dfc-b:referencedBy: http://test.host/api/dfc/enterprises/10000/catalog_items/10001
-                      dfc-b:image: http://test.host/rails/active_storage/url/logo-white.png
+                      dfc-b:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTEsInB1ciI6ImJsb2JfaWQifX0=--e90e5aefd9e3ee16da767b524f1a0c52f15759f2/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                       dfc-b:isVariantOf: http://test.host/api/dfc/product_groups/90000
                       ofn:spree_product_id: 90000
                       ofn:spree_product_uri: http://test.host/api/dfc/enterprises/10000?spree_product_id=90000
-                      ofn:image: http://test.host/rails/active_storage/url/logo-white.png
+                      ofn:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTEsInB1ciI6ImJsb2JfaWQifX0=--e90e5aefd9e3ee16da767b524f1a0c52f15759f2/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                     - "@id": http://test.host/api/dfc/enterprises/10000/catalog_items/10001
                       "@type": dfc-b:CatalogItem
                       dfc-b:references: http://test.host/api/dfc/enterprises/10000/supplied_products/10001
@@ -738,14 +738,6 @@ paths:
                   value:
                     "@context": https://w3id.org/dfc/ontology/context/context_1.16.0.json
                     "@graph":
-                    - "@id": http://test.host/api/dfc/enterprises/10001
-                      "@type": dfc-b:Enterprise
-                      dfc-b:hasAddress: http://test.host/api/dfc/addresses/40001
-                      dfc-b:name: Fred's Icecream
-                      dfc-b:hasDescription: We use our strawberries to make icecream.
-                      dfc-b:VATnumber: 123 457
-                      dfc-b:hasMainContact: http://test.host/api/dfc/enterprises/10001#mainContact
-                      ofn:long_description: "<p>Hello, world!</p><p>This is a paragraph.</p>"
                     - "@id": http://test.host/api/dfc/enterprises/10000
                       "@type": dfc-b:Enterprise
                       dfc-b:hasAddress: http://test.host/api/dfc/addresses/40000
@@ -755,7 +747,7 @@ paths:
                       dfc-b:email: hello@example.org
                       dfc-b:websitePage: https://openfoodnetwork.org
                       dfc-b:hasSocialMedia: http://test.host/api/dfc/enterprises/10000/social_medias/facebook
-                      dfc-b:logo: http://test.host/rails/active_storage/url/logo.png
+                      dfc-b:logo: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTIsInB1ciI6ImJsb2JfaWQifX0=--7ad4569dc9c1e04092c1dc616f6fcc58d30451bb/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzE4MCwxODBdLCJjcm9wIjpbMCwwLDE4MCwxODBdfSwicHVyIjoidmFyaWF0aW9uIn19--e1d8ec5dd54a6dd2bd38fe0d43ab4d15ecacf6d7/logo.png
                       dfc-b:name: Fred's Farm
                       dfc-b:hasDescription: This is an awesome enterprise
                       dfc-b:VATnumber: 123 456
@@ -764,21 +756,22 @@ paths:
                       dfc-b:hasMainContact: http://test.host/api/dfc/enterprises/10000#mainContact
                       ofn:long_description: "<p>Hello, world!</p><p>This is a paragraph.</p>"
                       ofn:contact_name: Fred Farmer
-                      ofn:logo_url: http://test.host/rails/active_storage/url/logo.png
-                      ofn:promo_image_url: http://test.host/rails/active_storage/url/promo.png
-                    - "@id": http://test.host/api/dfc/enterprises/10001#mainContact
-                      "@type": dfc-b:Person
+                      ofn:logo_url: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTIsInB1ciI6ImJsb2JfaWQifX0=--7ad4569dc9c1e04092c1dc616f6fcc58d30451bb/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzE4MCwxODBdLCJjcm9wIjpbMCwwLDE4MCwxODBdfSwicHVyIjoidmFyaWF0aW9uIn19--e1d8ec5dd54a6dd2bd38fe0d43ab4d15ecacf6d7/logo.png
+                      ofn:promo_image_url: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTMsInB1ciI6ImJsb2JfaWQifX0=--868c2ce3851d69628407872f95e833439793f742/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzEyMDAsMjYwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--a1b24ad07d4a9c1c4dbd60f310781d0cafca040d/promo.png
+                    - "@id": http://test.host/api/dfc/enterprises/10001
+                      "@type": dfc-b:Enterprise
+                      dfc-b:hasAddress: http://test.host/api/dfc/addresses/40001
+                      dfc-b:name: Fred's Icecream
+                      dfc-b:hasDescription: We use our strawberries to make icecream.
+                      dfc-b:VATnumber: 123 457
+                      dfc-b:hasMainContact: http://test.host/api/dfc/enterprises/10001#mainContact
+                      ofn:long_description: "<p>Hello, world!</p><p>This is a paragraph.</p>"
                     - "@id": http://test.host/api/dfc/enterprises/10000#mainContact
                       "@type": dfc-b:Person
                       dfc-b:firstName: Fred
                       dfc-b:familyName: Farmer
-                    - "@id": http://test.host/api/dfc/addresses/40001
-                      "@type": dfc-b:Address
-                      dfc-b:hasStreet: 42 Doveton Street
-                      dfc-b:hasPostalCode: '20170'
-                      dfc-b:hasCity: Herndon
-                      dfc-b:hasCountry: http://publications.europa.eu/resource/authority/country/AUS
-                      dfc-b:region: Victoria
+                    - "@id": http://test.host/api/dfc/enterprises/10001#mainContact
+                      "@type": dfc-b:Person
                     - "@id": http://test.host/api/dfc/addresses/40000
                       "@type": dfc-b:Address
                       dfc-b:hasStreet: 42 Doveton Street
@@ -787,6 +780,13 @@ paths:
                       dfc-b:hasCountry: http://publications.europa.eu/resource/authority/country/AUS
                       dfc-b:latitude: -25.345376
                       dfc-b:longitude: 131.0312006
+                      dfc-b:region: Victoria
+                    - "@id": http://test.host/api/dfc/addresses/40001
+                      "@type": dfc-b:Address
+                      dfc-b:hasStreet: 42 Doveton Street
+                      dfc-b:hasPostalCode: '20170'
+                      dfc-b:hasCity: Herndon
+                      dfc-b:hasCountry: http://publications.europa.eu/resource/authority/country/AUS
                       dfc-b:region: Victoria
                     - "@id": http://test.host/api/dfc/enterprises/10000/supplied_products/10001
                       "@type": dfc-b:SuppliedProduct
@@ -797,11 +797,11 @@ paths:
                         dfc-b:hasUnit: dfc-m:Gram
                         dfc-b:value: 1.0
                       dfc-b:referencedBy: http://test.host/api/dfc/enterprises/10000/catalog_items/10001
-                      dfc-b:image: http://test.host/rails/active_storage/url/logo-white.png
+                      dfc-b:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTQsInB1ciI6ImJsb2JfaWQifX0=--6abc10e349d088c1cd7fae45e7e6c8fbab16cec0/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                       dfc-b:isVariantOf: http://test.host/api/dfc/product_groups/90000
                       ofn:spree_product_id: 90000
                       ofn:spree_product_uri: http://test.host/api/dfc/enterprises/10000?spree_product_id=90000
-                      ofn:image: http://test.host/rails/active_storage/url/logo-white.png
+                      ofn:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTQsInB1ciI6ImJsb2JfaWQifX0=--6abc10e349d088c1cd7fae45e7e6c8fbab16cec0/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                     - "@id": http://test.host/api/dfc/enterprises/10000/catalog_items/10001
                       "@type": dfc-b:CatalogItem
                       dfc-b:references: http://test.host/api/dfc/enterprises/10000/supplied_products/10001
@@ -843,7 +843,7 @@ paths:
                       dfc-b:email: hello@example.org
                       dfc-b:websitePage: https://openfoodnetwork.org
                       dfc-b:hasSocialMedia: http://test.host/api/dfc/enterprises/10000/social_medias/facebook
-                      dfc-b:logo: http://test.host/rails/active_storage/url/logo.png
+                      dfc-b:logo: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTUsInB1ciI6ImJsb2JfaWQifX0=--6e5af2c21cbff38b6cfde9db921d0c8fecfeda98/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzE4MCwxODBdLCJjcm9wIjpbMCwwLDE4MCwxODBdfSwicHVyIjoidmFyaWF0aW9uIn19--e1d8ec5dd54a6dd2bd38fe0d43ab4d15ecacf6d7/logo.png
                       dfc-b:name: Fred's Farm
                       dfc-b:hasDescription: This is an awesome enterprise
                       dfc-b:VATnumber: 123 456
@@ -852,8 +852,8 @@ paths:
                       dfc-b:hasMainContact: http://test.host/api/dfc/enterprises/10000#mainContact
                       ofn:long_description: "<p>Hello, world!</p><p>This is a paragraph.</p>"
                       ofn:contact_name: Fred Farmer
-                      ofn:logo_url: http://test.host/rails/active_storage/url/logo.png
-                      ofn:promo_image_url: http://test.host/rails/active_storage/url/promo.png
+                      ofn:logo_url: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTUsInB1ciI6ImJsb2JfaWQifX0=--6e5af2c21cbff38b6cfde9db921d0c8fecfeda98/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzE4MCwxODBdLCJjcm9wIjpbMCwwLDE4MCwxODBdfSwicHVyIjoidmFyaWF0aW9uIn19--e1d8ec5dd54a6dd2bd38fe0d43ab4d15ecacf6d7/logo.png
+                      ofn:promo_image_url: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTYsInB1ciI6ImJsb2JfaWQifX0=--f29f3ee16f012e0f824df31daef1c26e1993e9b5/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzEyMDAsMjYwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--a1b24ad07d4a9c1c4dbd60f310781d0cafca040d/promo.png
                       dfc-b:affiliates: http://test.host/api/dfc/enterprise_groups/60000
                     - "@id": http://test.host/api/dfc/enterprises/10000#mainContact
                       "@type": dfc-b:Person
@@ -877,11 +877,11 @@ paths:
                         dfc-b:hasUnit: dfc-m:Gram
                         dfc-b:value: 1.0
                       dfc-b:referencedBy: http://test.host/api/dfc/enterprises/10000/catalog_items/10001
-                      dfc-b:image: http://test.host/rails/active_storage/url/logo-white.png
+                      dfc-b:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTcsInB1ciI6ImJsb2JfaWQifX0=--623958a1d7629e22533f4d33c90b4118e49f60ab/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                       dfc-b:isVariantOf: http://test.host/api/dfc/product_groups/90000
                       ofn:spree_product_id: 90000
                       ofn:spree_product_uri: http://test.host/api/dfc/enterprises/10000?spree_product_id=90000
-                      ofn:image: http://test.host/rails/active_storage/url/logo-white.png
+                      ofn:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTcsInB1ciI6ImJsb2JfaWQifX0=--623958a1d7629e22533f4d33c90b4118e49f60ab/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                     - "@id": http://test.host/api/dfc/enterprises/10000/catalog_items/10001
                       "@type": dfc-b:CatalogItem
                       dfc-b:references: http://test.host/api/dfc/enterprises/10000/supplied_products/10001
@@ -906,7 +906,7 @@ paths:
                       dfc-b:email: hello@example.org
                       dfc-b:websitePage: https://openfoodnetwork.org
                       dfc-b:hasSocialMedia: http://test.host/api/dfc/enterprises/10000/social_medias/facebook
-                      dfc-b:logo: http://test.host/rails/active_storage/url/logo.png
+                      dfc-b:logo: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTgsInB1ciI6ImJsb2JfaWQifX0=--8c9c06c6cd9c58a9557980cd4130a772a33db027/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzE4MCwxODBdLCJjcm9wIjpbMCwwLDE4MCwxODBdfSwicHVyIjoidmFyaWF0aW9uIn19--e1d8ec5dd54a6dd2bd38fe0d43ab4d15ecacf6d7/logo.png
                       dfc-b:name: Fred's Farm
                       dfc-b:hasDescription: This is an awesome enterprise
                       dfc-b:VATnumber: 123 456
@@ -915,8 +915,8 @@ paths:
                       dfc-b:hasMainContact: http://test.host/api/dfc/enterprises/10000#mainContact
                       ofn:long_description: "<p>Hello, world!</p><p>This is a paragraph.</p>"
                       ofn:contact_name: Fred Farmer
-                      ofn:logo_url: http://test.host/rails/active_storage/url/logo.png
-                      ofn:promo_image_url: http://test.host/rails/active_storage/url/promo.png
+                      ofn:logo_url: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTgsInB1ciI6ImJsb2JfaWQifX0=--8c9c06c6cd9c58a9557980cd4130a772a33db027/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzE4MCwxODBdLCJjcm9wIjpbMCwwLDE4MCwxODBdfSwicHVyIjoidmFyaWF0aW9uIn19--e1d8ec5dd54a6dd2bd38fe0d43ab4d15ecacf6d7/logo.png
+                      ofn:promo_image_url: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NTksInB1ciI6ImJsb2JfaWQifX0=--ee1f686b8d2bd1cbababc6e4b1dc82fefea68c26/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzEyMDAsMjYwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--a1b24ad07d4a9c1c4dbd60f310781d0cafca040d/promo.png
                       dfc-b:affiliates: http://test.host/api/dfc/enterprise_groups/60000
                     - "@id": http://test.host/api/dfc/enterprises/10000#mainContact
                       "@type": dfc-b:Person
@@ -940,11 +940,11 @@ paths:
                         dfc-b:hasUnit: dfc-m:Gram
                         dfc-b:value: 1.0
                       dfc-b:referencedBy: http://test.host/api/dfc/enterprises/10000/catalog_items/10001
-                      dfc-b:image: http://test.host/rails/active_storage/url/logo-white.png
+                      dfc-b:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NjAsInB1ciI6ImJsb2JfaWQifX0=--184f5ea5384d7b4676e49f911c0a75293cae4c2b/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                       dfc-b:isVariantOf: http://test.host/api/dfc/product_groups/90000
                       ofn:spree_product_id: 90000
                       ofn:spree_product_uri: http://test.host/api/dfc/enterprises/10000?spree_product_id=90000
-                      ofn:image: http://test.host/rails/active_storage/url/logo-white.png
+                      ofn:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NjAsInB1ciI6ImJsb2JfaWQifX0=--184f5ea5384d7b4676e49f911c0a75293cae4c2b/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                     - "@id": http://test.host/api/dfc/enterprises/10000/catalog_items/10001
                       "@type": dfc-b:CatalogItem
                       dfc-b:references: http://test.host/api/dfc/enterprises/10000/supplied_products/10001
@@ -969,7 +969,7 @@ paths:
                       dfc-b:email: hello@example.org
                       dfc-b:websitePage: https://openfoodnetwork.org
                       dfc-b:hasSocialMedia: http://test.host/api/dfc/enterprises/10000/social_medias/facebook
-                      dfc-b:logo: http://test.host/rails/active_storage/url/logo.png
+                      dfc-b:logo: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NjEsInB1ciI6ImJsb2JfaWQifX0=--5ed3b696e5c675a1cf77b6ea960f9cb87fd1bba5/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzE4MCwxODBdLCJjcm9wIjpbMCwwLDE4MCwxODBdfSwicHVyIjoidmFyaWF0aW9uIn19--e1d8ec5dd54a6dd2bd38fe0d43ab4d15ecacf6d7/logo.png
                       dfc-b:name: Fred's Farm
                       dfc-b:hasDescription: This is an awesome enterprise
                       dfc-b:VATnumber: 123 456
@@ -978,8 +978,8 @@ paths:
                       dfc-b:hasMainContact: http://test.host/api/dfc/enterprises/10000#mainContact
                       ofn:long_description: "<p>Hello, world!</p><p>This is a paragraph.</p>"
                       ofn:contact_name: Fred Farmer
-                      ofn:logo_url: http://test.host/rails/active_storage/url/logo.png
-                      ofn:promo_image_url: http://test.host/rails/active_storage/url/promo.png
+                      ofn:logo_url: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NjEsInB1ciI6ImJsb2JfaWQifX0=--5ed3b696e5c675a1cf77b6ea960f9cb87fd1bba5/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzE4MCwxODBdLCJjcm9wIjpbMCwwLDE4MCwxODBdfSwicHVyIjoidmFyaWF0aW9uIn19--e1d8ec5dd54a6dd2bd38fe0d43ab4d15ecacf6d7/logo.png
+                      ofn:promo_image_url: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NjIsInB1ciI6ImJsb2JfaWQifX0=--899c2285130f9a227dfa27ee8fb9e26e5e5fd648/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzEyMDAsMjYwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--a1b24ad07d4a9c1c4dbd60f310781d0cafca040d/promo.png
                       dfc-b:affiliates: http://test.host/api/dfc/enterprise_groups/60000
                     - "@id": http://test.host/api/dfc/enterprises/10000#mainContact
                       "@type": dfc-b:Person
@@ -1003,11 +1003,11 @@ paths:
                         dfc-b:hasUnit: dfc-m:Gram
                         dfc-b:value: 1.0
                       dfc-b:referencedBy: http://test.host/api/dfc/enterprises/10000/catalog_items/10001
-                      dfc-b:image: http://test.host/rails/active_storage/url/logo-white.png
+                      dfc-b:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NjMsInB1ciI6ImJsb2JfaWQifX0=--f0d793ae093d0c09fe05b3d3ab9d3c708336b693/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                       dfc-b:isVariantOf: http://test.host/api/dfc/product_groups/90000
                       ofn:spree_product_id: 90000
                       ofn:spree_product_uri: http://test.host/api/dfc/enterprises/10000?spree_product_id=90000
-                      ofn:image: http://test.host/rails/active_storage/url/logo-white.png
+                      ofn:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NjMsInB1ciI6ImJsb2JfaWQifX0=--f0d793ae093d0c09fe05b3d3ab9d3c708336b693/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                     - "@id": http://test.host/api/dfc/enterprises/10000/catalog_items/10001
                       "@type": dfc-b:CatalogItem
                       dfc-b:references: http://test.host/api/dfc/enterprises/10000/supplied_products/10001
@@ -1429,7 +1429,7 @@ paths:
                       dfc-b:email: hello@example.org
                       dfc-b:websitePage: https://openfoodnetwork.org
                       dfc-b:hasSocialMedia: http://test.host/api/dfc/enterprises/10000/social_medias/facebook
-                      dfc-b:logo: http://test.host/rails/active_storage/url/logo.png
+                      dfc-b:logo: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NjcsInB1ciI6ImJsb2JfaWQifX0=--1302a3e628331ef2ac2838edb6b18a9446c6e43c/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzE4MCwxODBdLCJjcm9wIjpbMCwwLDE4MCwxODBdfSwicHVyIjoidmFyaWF0aW9uIn19--e1d8ec5dd54a6dd2bd38fe0d43ab4d15ecacf6d7/logo.png
                       dfc-b:name: Fred's Farm
                       dfc-b:hasDescription: This is an awesome enterprise
                       dfc-b:VATnumber: 123 456
@@ -1464,7 +1464,7 @@ paths:
                       dfc-b:email: hello@example.org
                       dfc-b:websitePage: https://openfoodnetwork.org
                       dfc-b:hasSocialMedia: http://test.host/api/dfc/enterprises/10000/social_medias/facebook
-                      dfc-b:logo: http://test.host/rails/active_storage/url/logo.png
+                      dfc-b:logo: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NjksInB1ciI6ImJsb2JfaWQifX0=--1b1338dc97dd15e7162e947dc8d1d346251d40a0/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZmlsbCI6WzE4MCwxODBdLCJjcm9wIjpbMCwwLDE4MCwxODBdfSwicHVyIjoidmFyaWF0aW9uIn19--e1d8ec5dd54a6dd2bd38fe0d43ab4d15ecacf6d7/logo.png
                       dfc-b:name: Fred's Farm
                       dfc-b:hasDescription: This is an awesome enterprise
                       dfc-b:VATnumber: 123 456
@@ -1774,11 +1774,11 @@ paths:
                         dfc-b:hasUnit: dfc-m:Gram
                         dfc-b:value: 1.0
                       dfc-b:referencedBy: http://test.host/api/dfc/enterprises/10000/catalog_items/10001
-                      dfc-b:image: http://test.host/rails/active_storage/url/logo-white.png
+                      dfc-b:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NzQsInB1ciI6ImJsb2JfaWQifX0=--fdf37119098caf92b9d8d0a8aeb0ae701c9fd6b4/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                       dfc-b:isVariantOf: http://test.host/api/dfc/product_groups/90000
                       ofn:spree_product_id: 90000
                       ofn:spree_product_uri: http://test.host/api/dfc/enterprises/10000?spree_product_id=90000
-                      ofn:image: http://test.host/rails/active_storage/url/logo-white.png
+                      ofn:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NzQsInB1ciI6ImJsb2JfaWQifX0=--fdf37119098caf92b9d8d0a8aeb0ae701c9fd6b4/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                     - "@id": http://test.host/api/dfc/product_groups/90000
                       "@type": dfc-b:SuppliedProduct
                       dfc-b:name: Pesto
@@ -1811,11 +1811,11 @@ paths:
                         dfc-b:hasUnit: dfc-m:Gram
                         dfc-b:value: 1.0
                       dfc-b:referencedBy: http://test.host/api/dfc/enterprises/10000/catalog_items/10001
-                      dfc-b:image: http://test.host/rails/active_storage/url/logo-white.png
+                      dfc-b:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NzUsInB1ciI6ImJsb2JfaWQifX0=--f8de7815d3fdbed4398cc5a8f4ab27cefb15163c/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                       dfc-b:isVariantOf: http://test.host/api/dfc/product_groups/90000
                       ofn:spree_product_id: 90000
                       ofn:spree_product_uri: http://test.host/api/dfc/enterprises/10000?spree_product_id=90000
-                      ofn:image: http://test.host/rails/active_storage/url/logo-white.png
+                      ofn:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NzUsInB1ciI6ImJsb2JfaWQifX0=--f8de7815d3fdbed4398cc5a8f4ab27cefb15163c/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                     - "@id": http://test.host/api/dfc/product_groups/90000
                       "@type": dfc-b:SuppliedProduct
                       dfc-b:name: Pesto
@@ -1852,7 +1852,7 @@ paths:
                         dfc-b:hasUnit: dfc-m:Gram
                         dfc-b:value: 1.0
                       dfc-b:referencedBy: http://test.host/api/dfc/enterprises/10000/catalog_items/10001
-                      dfc-b:image: http://test.host/rails/active_storage/url/logo-white.png
+                      dfc-b:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NzYsInB1ciI6ImJsb2JfaWQifX0=--5517b679692e65a227868104a2ebd7fcbd46e166/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                     - "@id": http://test.host/api/dfc/product_groups/90000
                       "@type": dfc-b:SuppliedProduct
                       dfc-b:name: Pesto
@@ -1887,7 +1887,7 @@ paths:
                 success:
                   value:
                     "@context": https://w3id.org/dfc/ontology/context/context_1.16.0.json
-                    "@id": http://test.host/api/dfc/enterprises/10000/supplied_products/10001
+                    "@id": http://test.host/api/dfc/enterprises/10000/supplied_products/202
                     "@type": dfc-b:SuppliedProduct
                     dfc-b:name: Apple (6g)
                     dfc-b:description: A delicious heritage apple
@@ -1896,14 +1896,14 @@ paths:
                       "@type": dfc-b:QuantitativeValue
                       dfc-b:hasUnit: dfc-m:Gram
                       dfc-b:value: 6.0
-                    dfc-b:referencedBy: http://test.host/api/dfc/enterprises/10000/catalog_items/10001
-                    dfc-b:isVariantOf: http://test.host/api/dfc/product_groups/90000
-                    ofn:spree_product_id: 90000
-                    ofn:spree_product_uri: http://test.host/api/dfc/enterprises/10000?spree_product_id=90000
+                    dfc-b:referencedBy: http://test.host/api/dfc/enterprises/10000/catalog_items/202
+                    dfc-b:isVariantOf: http://test.host/api/dfc/product_groups/158
+                    ofn:spree_product_id: 158
+                    ofn:spree_product_uri: http://test.host/api/dfc/enterprises/10000?spree_product_id=158
                 when supplying spree_product_uri matching the host:
                   value:
                     "@context": https://w3id.org/dfc/ontology/context/context_1.16.0.json
-                    "@id": http://test.host/api/dfc/enterprises/10000/supplied_products/10001
+                    "@id": http://test.host/api/dfc/enterprises/10000/supplied_products/204
                     "@type": dfc-b:SuppliedProduct
                     dfc-b:name: Pesto - Apple (6g)
                     dfc-b:description: A delicious heritage apple
@@ -1912,12 +1912,12 @@ paths:
                       "@type": dfc-b:QuantitativeValue
                       dfc-b:hasUnit: dfc-m:Gram
                       dfc-b:value: 6.0
-                    dfc-b:referencedBy: http://test.host/api/dfc/enterprises/10000/catalog_items/10001
-                    dfc-b:image: http://test.host/rails/active_storage/url/logo-white.png
+                    dfc-b:referencedBy: http://test.host/api/dfc/enterprises/10000/catalog_items/204
+                    dfc-b:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6ODAsInB1ciI6ImJsb2JfaWQifX0=--7b891faff5da37d987c8850edb6d679ffa490ba0/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                     dfc-b:isVariantOf: http://test.host/api/dfc/product_groups/90000
                     ofn:spree_product_id: 90000
                     ofn:spree_product_uri: http://test.host/api/dfc/enterprises/10000?spree_product_id=90000
-                    ofn:image: http://test.host/rails/active_storage/url/logo-white.png
+                    ofn:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6ODAsInB1ciI6ImJsb2JfaWQifX0=--7b891faff5da37d987c8850edb6d679ffa490ba0/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
       requestBody:
         content:
           application/json:
@@ -1974,11 +1974,11 @@ paths:
                       dfc-b:hasUnit: dfc-m:Gram
                       dfc-b:value: 1.0
                     dfc-b:referencedBy: http://test.host/api/dfc/enterprises/10000/catalog_items/10001
-                    dfc-b:image: http://test.host/rails/active_storage/url/logo-white.png
+                    dfc-b:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6ODEsInB1ciI6ImJsb2JfaWQifX0=--102be4f59d0739853070311e59e1f86ec22bb69c/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
                     dfc-b:isVariantOf: http://test.host/api/dfc/product_groups/90000
                     ofn:spree_product_id: 90000
                     ofn:spree_product_uri: http://test.host/api/dfc/enterprises/10000?spree_product_id=90000
-                    ofn:image: http://test.host/rails/active_storage/url/logo-white.png
+                    ofn:image: http://test.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsiZGF0YSI6ODEsInB1ciI6ImJsb2JfaWQifX0=--102be4f59d0739853070311e59e1f86ec22bb69c/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fbGltaXQiOlsyNDAsMjQwXX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--9567a3a8a9de45f2e68955db727ac1a2507206d5/logo-white.png
         '404':
           description: not found
     put:

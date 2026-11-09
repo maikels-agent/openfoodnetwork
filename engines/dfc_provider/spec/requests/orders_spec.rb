@@ -39,6 +39,8 @@ RSpec.describe "Orders", swagger_doc: "dfc.yaml" do
       body.gsub!("offers/#{variant_id}", "offers/2000#{index + 1}")
       body.gsub!("supplied_products/#{variant_id}", "supplied_products/2000#{index + 1}")
     end
+
+    response.body = body
   end
 
   path "/api/dfc/enterprises/{enterprise_id}/orders/{order_id}" do
@@ -342,7 +344,7 @@ RSpec.describe "Orders", swagger_doc: "dfc.yaml" do
 
             # Rswag records the body as documentation and the id of the new
             # order is allocated by the database:
-            response.body.gsub!("orders/#{ofn_order.id}", "orders/10001")
+            response.body = response.body.gsub("orders/#{ofn_order.id}", "orders/10001")
 
             expect(enterprise.distributed_orders.count).to eq 1
             expect(ofn_order.created_by).to eq user
