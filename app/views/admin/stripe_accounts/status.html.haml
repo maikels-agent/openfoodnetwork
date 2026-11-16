@@ -1,0 +1,31 @@
+%turbo-frame#stripe-account-status
+  - scope = "spree.admin.payment_methods.stripe_connect"
+  - case @stripe_account[:status]
+  - when :stripe_disabled
+    .alert-box.error
+      = t(:stripe_disabled_msg, scope:)
+  - when :account_missing
+    .alert-box.error
+      = t(:account_missing_msg, scope:)
+      - if @enterprise
+        %a.button{ target: "_blank", href: edit_admin_enterprise_path(@enterprise, anchor: "/payment_methods_panel") }
+          = t(:connect_one, scope:)
+          %i.icon-chevron-right
+  - when :access_revoked
+    .alert-box.error
+      = t(:access_revoked_msg, scope:)
+  - when :connected
+    .alert-box.ok
+      .status
+        %strong= t(:status, scope:) + ":"
+        = t(:connected, scope:)
+        %i.icon-ok
+      .account_id
+        %strong= t(:account_id, scope:) + ":"
+        = @stripe_account[:id]
+      .business_name
+        %strong= t(:business_name, scope:) + ":"
+        = @stripe_account[:business_name]
+      .charges_enabled
+        %strong= t(:charges_enabled, scope:) + ":"
+        = @stripe_account[:charges_enabled] ? t(:say_yes) : t(:say_no)

@@ -20,11 +20,11 @@ RSpec.describe '
       click_link 'Payment Methods'
       click_link 'New Payment Method'
 
-      expect(page).to have_select2 "payment_method_type", selected: "Choose..."
+      expect(page).to have_css "#payment_method_type + .ts-wrapper", text: "Choose..."
 
       fill_in 'payment_method_name', with: 'Cheque payment method'
       cash_name = "Cash/EFT/etc. (payments for which automatic validation is not required)"
-      select2_select cash_name, from: "payment_method_type"
+      tomselect_select cash_name, from: "payment_method_type"
 
       check "payment_method_distributor_ids_#{@distributors[0].id}"
       click_button 'Create'
@@ -72,9 +72,9 @@ RSpec.describe '
         login_as user
         visit new_admin_payment_method_path
 
-        select2_select "Stripe", from: "payment_method_type"
+        tomselect_select "Stripe", from: "payment_method_type"
 
-        select2_select "Missing", from: "payment_method_preferred_enterprise_id"
+        tomselect_select "Missing", from: "payment_method_preferred_enterprise_id"
         expect(page).to have_selector "#stripe-account-status .alert-box.error",
                                       text: 'No Stripe account exists for this enterprise.'
         click_link 'Connect One' # opens in new tab
@@ -96,12 +96,12 @@ RSpec.describe '
         end
         new_window.close
 
-        select2_select "Revoked", from: "payment_method_preferred_enterprise_id"
+        tomselect_select "Revoked", from: "payment_method_preferred_enterprise_id"
         expect(page).to have_selector "#stripe-account-status .alert-box.error",
                                       text: 'Access to this Stripe account has been revoked, ' \
                                             'please reconnect your account.'
 
-        select2_select "Connected", from: "payment_method_preferred_enterprise_id"
+        tomselect_select "Connected", from: "payment_method_preferred_enterprise_id"
         expect(page).to have_selector "#stripe-account-status .status", text: "Status: Connected"
         expect(page).to have_selector "#stripe-account-status .account_id",
                                       text: "Account ID: acc_connected123"
@@ -142,7 +142,7 @@ RSpec.describe '
 
       fill_in "payment_method_name", with: 'Cheque payment method'
       fill_in "payment_method_description", with: "Payment description"
-      select2_select "PayPal Express", from: "payment_method_type"
+      tomselect_select "PayPal Express", from: "payment_method_type"
       select2_select "Flat Percent", from: 'calc_type'
 
       click_button 'Create'
@@ -180,7 +180,7 @@ RSpec.describe '
     login_as_admin
     visit edit_admin_payment_method_path payment_method
 
-    select2_select "PayPal Express", from: "payment_method_type"
+    tomselect_select "PayPal Express", from: "payment_method_type"
     expect(page).to have_field 'Login'
 
     click_link 'Back To Payment Methods List'
@@ -195,12 +195,12 @@ RSpec.describe '
     visit edit_admin_payment_method_path payment_method
 
     fill_in 'payment_method_name', with: 'New PM Name'
-    find(:css, "tags-input .tags input").set "member\n"
+    fill_in "Add a tag", with: "member\n"
 
     uncheck "payment_method_distributor_ids_#{@distributors[0].id}"
     check "payment_method_distributor_ids_#{@distributors[1].id}"
     check "payment_method_distributor_ids_#{@distributors[2].id}"
-    select2_select "PayPal Express", from: "payment_method_type"
+    tomselect_select "PayPal Express", from: "payment_method_type"
     expect(page).to have_field 'Login'
     fill_in 'payment_method_preferred_login', with: 'testlogin'
     fill_in 'payment_method_preferred_password', with: 'secret'
@@ -210,7 +210,7 @@ RSpec.describe '
 
     expect(flash_message).to eq 'Payment Method has been successfully updated!'
 
-    expect(first('tags-input .tag-list ti-tag-item')).to have_content "member"
+    expect(page).to have_css ".tags .tag-list .tag-item", text: "member"
 
     payment_method = Spree::PaymentMethod.find_by(name: 'New PM Name')
     expect(payment_method.distributors).to include @distributors[1], @distributors[2]
@@ -225,7 +225,7 @@ RSpec.describe '
 
     expect(flash_message).to eq 'Payment Method has been successfully updated!'
     expect(page).to have_field 'Password', with: ''
-    expect(first('tags-input .tag-list ti-tag-item')).to have_content "member"
+    expect(page).to have_css ".tags .tag-list .tag-item", text: "member"
 
     payment_method = Spree::PaymentMethod.find_by(name: 'New PM Name')
     expect(payment_method.tag_list).to eq ["member"]
@@ -265,17 +265,17 @@ RSpec.describe '
       visit new_admin_payment_method_path
       fill_in 'payment_method_name', with: 'Cheque payment method'
       cash_name = "Cash/EFT/etc. (payments for which automatic validation is not required)"
-      select2_select cash_name, from: "payment_method_type"
+      tomselect_select cash_name, from: "payment_method_type"
 
       expect(page).to have_field 'payment_method_description'
       expect(page).to have_select 'payment_method_display_on'
 
       check "payment_method_distributor_ids_#{distributor1.id}"
-      find(:css, "tags-input .tags input").set "local\n"
+      fill_in "Add a tag", with: "local\n"
       click_button 'Create'
 
       expect(flash_message).to eq('Payment Method has been successfully created!')
-      expect(first('tags-input .tag-list ti-tag-item')).to have_content "local"
+      expect(page).to have_css ".tags .tag-list .tag-item", text: "local"
 
       payment_method = Spree::PaymentMethod.find_by(name: 'Cheque payment method')
       expect(payment_method.distributors).to eq([distributor1])

@@ -34,13 +34,6 @@ module Admin
                                   Api::Admin::IdNameSerializer
     end
 
-    def admin_inject_payment_method(payment_method)
-      admin_inject_json_ams "admin.paymentMethods",
-                            "paymentMethod",
-                            payment_method,
-                            Api::Admin::PaymentMethodSerializer
-    end
-
     def admin_inject_shipping_methods(shipping_methods)
       admin_inject_json_ams_array "admin.shippingMethods",
                                   "shippingMethods",

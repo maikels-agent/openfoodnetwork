@@ -28,23 +28,36 @@ module Admin
     end
 
     def status
-      return render json: { status: :stripe_disabled } unless Spree::Config.stripe_connect_enabled
+      @stripe_account = stripe_account_status
+
+      respond_to do |format|
+        format.html do
+          @enterprise = Enterprise.managed_by(spree_current_user)
+            .find_by(id: params[:enterprise_id])
+          render :status, layout: false
+        end
+        format.json { render json: @stripe_account }
+      end
+    end
+
+    private
+
+    def stripe_account_status
+      return { status: :stripe_disabled } unless Spree::Config.stripe_connect_enabled
 
       stripe_account = StripeAccount.find_by(enterprise_id: params[:enterprise_id])
-      return render json: { status: :account_missing } unless stripe_account
+      return { status: :account_missing } unless stripe_account
 
       authorize! :status, stripe_account
 
       begin
         status = Stripe::Account.retrieve(stripe_account.stripe_user_id)
         attrs = %i[id business_name charges_enabled]
-        render json: status.to_hash.slice(*attrs).merge( status: :connected)
+        status.to_hash.slice(*attrs).merge(status: :connected)
       rescue Stripe::APIError
-        render json: { status: :access_revoked }
+        { status: :access_revoked }
       end
     end
-
-    private
 
     def model_class
       StripeAccount

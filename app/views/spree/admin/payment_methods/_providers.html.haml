@@ -1,8 +1,8 @@
-#provider-settings{ "ng-controller": "ProvidersCtrl" }
+#provider-settings{ data: { controller: "frame-loader", "frame-loader-url-value": admin_payment_methods_show_provider_preferences_path(pm_id: @object.id), "frame-loader-param-value": "provider_type" } }
   .row
     .alpha.four.columns
       = label :payment_method, :type, t('.provider')
     .omega.twelve.columns
-      = select(:payment_method, :type, payment_method_type_options(@providers), {}, { class: 'select2 fullwidth', required: true, placeholder: t("admin.choose"), 'provider-prefs-for' => "#{@object.id}"})
+      = select(:payment_method, :type, payment_method_type_options(@providers), { include_blank: t("admin.choose") }, { class: 'fullwidth', required: true, data: { controller: "tom-select", action: "change->frame-loader#load" } })
 
-  %div{"ng-include" => "include_html" }
+  %turbo-frame#provider_preferences{ src: (admin_payment_methods_show_provider_preferences_path(pm_id: @object.id, provider_type: @object.type) if @object.type.present?), data: { "frame-loader-target": "frame" } }

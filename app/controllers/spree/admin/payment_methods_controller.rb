@@ -99,6 +99,8 @@ module Spree
           @payment_method = PaymentMethod.new(type: params[:provider_type])
         end
 
+        load_hubs
+
         render partial: 'provider_settings'
       end
 

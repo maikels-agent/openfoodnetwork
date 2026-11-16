@@ -1,6 +1,4 @@
-= admin_inject_payment_method(@payment_method)
-= admin_inject_json_ams_array "admin.paymentMethods", "shops", @hubs, Api::Admin::BasicEnterpriseSerializer
-.alpha.eleven.columns{ "ng-app" => "admin.paymentMethods", "ng-controller" => "paymentMethodCtrl" }
+.alpha.eleven.columns
   .row
     = t '.deactivation_warning'
   .row
@@ -39,9 +37,8 @@
   .row
     .alpha.four.columns
       = label(:payment_method, :tags, t('.tags'))
-    .omega.twelve.columns
-      = hidden_field(:payment_method, :tag_list, "ng-value" => "paymentMethod.tag_list")
-      %tags-with-translation#something{ object: "paymentMethod" }
+    .omega.twelve.columns.tags-input-field
+      = render TagListInputComponent.new(name: "payment_method[tag_list]", tags: @payment_method.tag_list, autocomplete_url: customer_tags_admin_tag_rules_path, placeholder: t('admin.order_cycles.form.add_a_tag'), aria_label: t('.tags'))
 
   = render 'providers'
 

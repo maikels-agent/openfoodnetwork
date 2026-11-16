@@ -1,47 +1,24 @@
 %fieldset.no-border-bottom#gateway_fields
   %legend{ align: "center"}
     = t(:provider_settings)
-  .preference-settings{ "ng-controller": "StripeController" }
+  .preference-settings{ data: { controller: "frame-loader", "frame-loader-url-value": main_app.status_admin_stripe_accounts_path, "frame-loader-param-value": "enterprise_id" } }
+    - enterprise_id = @payment_method.preferred_enterprise_id.presence
+    - enterprise_id = nil unless enterprise_id&.positive?
     = fields_for :payment_method, @payment_method do |payment_method_form|
       .row
         .alpha.four.columns
           = payment_method_form.label :stripe_account_owner
         .omega.twelve.columns
           - if @stripe_account_holder.nil? || spree_current_user.enterprises.include?(@stripe_account_holder)
-            %input.ofn-select2.fullwidth#payment_method_preferred_enterprise_id{ type: 'number', name: 'payment_method[preferred_enterprise_id]', placeholder: t(".enterprise_select_placeholder"), data: 'shops', "ng-model": 'paymentMethod.preferred_enterprise_id' }
+            = payment_method_form.select :preferred_enterprise_id, options_from_collection_for_select(@hubs, :id, :name, enterprise_id), { include_blank: t(".enterprise_select_placeholder") }, class: "fullwidth", data: { controller: "tom-select", action: "change->frame-loader#load" }
           - else
             %strong= Enterprise.find_by(id: @payment_method)&.name
 
-    #stripe-account-status{ "ng-show": "paymentMethod.preferred_enterprise_id" }
-      .alert-box.warning{ "ng-hide": "stripe_account.status" }
+    %template{ data: { "frame-loader-target": "loading" } }
+      .alert-box.warning
         = t(".loading_account_information_msg")
 
-      .alert-box.error{ "ng-show": "stripe_account.status == 'stripe_disabled'" }
-        = t(".stripe_disabled_msg")
-
-      .alert-box.error{ "ng-show": "stripe_account.status == 'request_failed'" }
-        = t(".request_failed_msg")
-
-      .alert-box.error{ "ng-show": "stripe_account.status == 'account_missing'" }
-        = t(".account_missing_msg")
-        %a.button{ target: 'blank', "ng-href": "{{current_enterprise_stripe_path()}}" }
-          = t(".connect_one")
-          %i.icon-chevron-right
-
-      .alert-box.error{ "ng-show": "stripe_account.status == 'access_revoked'" }
-        = t(".access_revoked_msg")
-
-      .alert-box.ok{ "ng-show": "stripe_account.status == 'connected'" }
-        .status
-          %strong= t(".status") + ":"
-          = t(".connected")
-          %i.icon-ok
-        .account_id
-          %strong= t(".account_id") + ":"
-          {{ stripe_account.id }}
-        .business_name
-          %strong= t(".business_name") + ":"
-          {{ stripe_account.business_name }}
-        .charges_enabled
-          %strong= t(".charges_enabled") + ":"
-          {{ stripe_account.charges_enabled ? "say_yes" : "say_no" | t }}
+    %turbo-frame#stripe-account-status{ src: (main_app.status_admin_stripe_accounts_path(enterprise_id:) if enterprise_id), data: { "frame-loader-target": "frame" } }
+      - if enterprise_id
+        .alert-box.warning
+          = t(".loading_account_information_msg")
