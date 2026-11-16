@@ -108,3 +108,8 @@
     }
   }
 }
+
+// Within a form, the tags input looks like the other fields.
+.tags-input-field .tags-input .tags {
+  border: $border-input;
+}
