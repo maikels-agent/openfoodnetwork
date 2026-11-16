@@ -1,3 +1,4 @@
-%p.alert-box{"ng-app" => "admin.users"}
+%p.alert-box
   = t(".confirmation_pending", address: @user.email)
-  %a{"resend-user-email-confirmation" => @user.email}
+  %a{ href: "#", data: { controller: "resend-confirmation", action: "resend-confirmation#resend:prevent", "resend-confirmation-email-value": @user.email } }
+    = t("js.admin.resend_user_email_confirmation.resend")

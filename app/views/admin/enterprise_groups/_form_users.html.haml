@@ -8,8 +8,6 @@
           = t 'admin.whats_this'
     .eight.columns.omega
     - if spree_current_user.admin?
-      = f.hidden_field :owner_id,
-        class: "select2 fullwidth",
-        'user-select' => "{id:'#{@enterprise_group.owner&.id}', email:'#{@enterprise_group.owner&.email}'}"
+      = f.select :owner_id, [[@enterprise_group.owner&.email, @enterprise_group.owner&.id]].select(&:last), {}, class: "fullwidth", data: { controller: "select-user", "select-user-value-field-value": "id", "select-user-create-value": false }
     - else
       = @enterprise_group.owner&.email

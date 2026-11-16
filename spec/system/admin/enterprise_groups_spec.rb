@@ -108,6 +108,22 @@ RSpec.describe '
     expect(EnterpriseGroup.all).not_to include eg
   end
 
+  it "changing the owner of an enterprise group" do
+    group = create(:enterprise_group, name: 'My Group', owner: create(:user))
+    new_owner = create(:user, email: "new.owner@example.net")
+
+    visit edit_admin_enterprise_group_path(group)
+    within(".side_menu") { click_link "Users" }
+
+    expect(page).to have_content group.owner.email
+
+    tomselect_search_and_select "new.owner@example.net", from: "enterprise_group_owner_id"
+    click_button 'Update'
+
+    expect(page).to have_content 'Enterprise group "My Group" has been successfully updated!'
+    expect(group.reload.owner).to eq new_owner
+  end
+
   context "as an enterprise user" do
     let(:user) { create(:user) }
     let!(:enterprise) { create(:distributor_enterprise, owner: user) }

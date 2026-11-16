@@ -2,16 +2,16 @@
   %legend= t('.images')
   .row
     .alpha.three.columns
-      = f.label :logo, 'ofn-with-tip' => t('admin_enterprise_groups_data_powertip_logo')
-      %div{'ofn-with-tip' => t('admin_enterprise_groups_data_powertip_logo')}
+      = f.label :logo, class: 'with-tip', 'data-powertip' => t('admin_enterprise_groups_data_powertip_logo')
+      .with-tip{'data-powertip' => t('admin_enterprise_groups_data_powertip_logo')}
         %a= t 'admin.whats_this'
     .omega.eight.columns
       = image_tag @object.logo if @object.logo.attached?
       = f.file_field :logo, accept: "image/*"
   .row
     .alpha.three.columns
-      = f.label :promo_image, 'ofn-with-tip' => t(:admin_enterprise_groups_data_powertip_promo_image)
-      %div{'ofn-with-tip' => t('admin_enterprise_groups_data_powertip_promo_image')}
+      = f.label :promo_image, class: 'with-tip', 'data-powertip' => t(:admin_enterprise_groups_data_powertip_promo_image)
+      .with-tip{'data-powertip' => t('admin_enterprise_groups_data_powertip_promo_image')}
         %a= t 'admin.whats_this'
     .omega.eight.columns
       = image_tag @object.promo_image if @object.promo_image.attached?
