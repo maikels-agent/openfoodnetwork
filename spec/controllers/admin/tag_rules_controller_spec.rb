@@ -68,6 +68,37 @@ RSpec.describe Admin::TagRulesController do
     end
   end
 
+  describe "#customer_tags" do
+    render_views
+
+    let(:enterprise) { create(:distributor_enterprise) }
+
+    before do
+      create(:filter_order_cycles_tag_rule, enterprise:, preferred_customer_tags: "member")
+      create(:filter_shipping_methods_tag_rule, enterprise:,
+                                                preferred_customer_tags: "member,local")
+      create(:filter_order_cycles_tag_rule, preferred_customer_tags: "other")
+
+      controller_login_as_enterprise_user [enterprise]
+    end
+
+    it "returns customer tags of my enterprises with their number of rules" do
+      spree_get(:customer_tags, format: :html)
+
+      expect(response).to render_template :customer_tags
+      expect(response.body).to match(/member\s+&mdash;\s+has 2 rules/)
+      expect(response.body).to match(/local\s+&mdash;\s+has one rule/)
+      expect(response.body).not_to include "other"
+    end
+
+    it "returns only tags matching the search string" do
+      spree_get(:customer_tags, format: :html, q: "Loc")
+
+      expect(response.body).to include "local"
+      expect(response.body).not_to include "member"
+    end
+  end
+
   describe "#variant_tag_rules", feature: :variant_tag do
     render_views
 

@@ -1,6 +1,4 @@
-= admin_inject_shipping_method(@shipping_method)
-.alpha.eleven.columns{ "ng-app" => "admin.shippingMethods",
-  "ng-controller" => "shippingMethodCtrl" }
+.alpha.eleven.columns
   .row
     = t '.deactivation_warning'
   .row
@@ -40,9 +38,7 @@
     .alpha.four.columns
       = f.label :tags, t(:tags)
     .omega.twelve.columns
-      = f.hidden_field :tag_list, "ng-value" => "shippingMethod.tag_list"
-      %tags-with-translation#something{ object: "shippingMethod", 'find-tags' => 'findTags(query)' }
-
+      = render TagListInputComponent.new(name: f.field_name(:tag_list), tags: @shipping_method.tag_list, autocomplete_url: customer_tags_admin_tag_rules_path, placeholder: t('admin.order_cycles.form.add_a_tag'), aria_label: t(:tags))
 
   = render partial: 'spree/admin/shared/calculator_fields', locals: { f: f }
 

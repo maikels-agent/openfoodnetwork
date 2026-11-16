@@ -48,13 +48,6 @@ module Admin
                                   Api::Admin::IdNameSerializer
     end
 
-    def admin_inject_shipping_method(shipping_method)
-      admin_inject_json_ams "admin.shippingMethods",
-                            "shippingMethod",
-                            shipping_method,
-                            Api::Admin::ShippingMethodSerializer
-    end
-
     def admin_inject_shops(shops, opts = {})
       opts.reverse_merge!(module: 'admin.customers')
       admin_inject_json_ams_array opts[:module],

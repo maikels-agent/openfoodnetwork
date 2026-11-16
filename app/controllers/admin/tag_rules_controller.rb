@@ -51,6 +51,16 @@ module Admin
       end
     end
 
+    # Used by the tag input autocomplete to suggest customer tags which have rules
+    def customer_tags
+      mapping = TagRule.mapping_for(enterprises).values
+      @tags = mapping.select { |tag| filter_tags([tag[:text]], params[:q].to_s).any? }
+
+      respond_with do |format|
+        format.html { render :customer_tags, layout: false }
+      end
+    end
+
     # Used by the tag input autocomplete to suggest existing variant tags
     def variant_tag_rules
       enterprise_ids = enterprises.pluck(:id)

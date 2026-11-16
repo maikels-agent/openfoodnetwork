@@ -108,6 +108,7 @@ Openfoodnetwork::Application.routes.draw do
 
     resources :tag_rules, only: [] do
       get :map_by_tag, on: :collection, format: :json
+      get :customer_tags, on: :collection
       get :variant_tag_rules, on: :collection
     end
 

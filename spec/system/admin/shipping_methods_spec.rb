@@ -133,7 +133,7 @@ RSpec.describe 'shipping methods' do
       fill_in 'shipping_method_name', with: 'Teleport'
 
       check "shipping_method_distributor_ids_#{distributor1.id}"
-      find(:css, "tags-input .tags input").set "local\n"
+      fill_in "Add a tag", with: "local\n"
       within(".tags .tag-list") do
         expect(page).to have_css '.tag-item', text: "local"
       end
@@ -144,11 +144,27 @@ RSpec.describe 'shipping methods' do
       end
       expect(page).to have_content "Editing Shipping Method"
 
-      expect(first('tags-input .tag-list ti-tag-item')).to have_content "local"
+      expect(page).to have_css ".tags .tag-list .tag-item", text: "local"
 
       shipping_method = Spree::ShippingMethod.find_by(name: 'Teleport')
       expect(shipping_method.distributors).to eq([distributor1])
       expect(shipping_method.tag_list).to eq(["local"])
+    end
+
+    it "suggests customer tags with existing rules" do
+      create(:filter_shipping_methods_tag_rule, enterprise: distributor1,
+                                                preferred_customer_tags: "member")
+
+      visit edit_admin_shipping_method_path(shipping_method1)
+      find_field("Add a tag").send_keys "mem"
+      find("li.suggestion-item", text: "member — has one rule").click
+
+      expect(page).to have_css ".tags .tag-list .tag-item", text: "member"
+
+      click_button "Update"
+
+      expect(page).to have_content 'Shipping Method "One" has been successfully updated!'
+      expect(shipping_method1.reload.tag_list).to eq ["member"]
     end
 
     it "shows me only shipping methods I have access to" do
