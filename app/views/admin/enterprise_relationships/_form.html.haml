@@ -1,20 +1,21 @@
-%tr
+%tr#enterprise_relationship_form
   %td
-    %select.select2.fullwidth{id: "enterprise_relationship_parent_id", "ng-model" => "parent_id", "ng-options" => "e.id as e.name for e in Enterprises.my_enterprises"}
+    = select_tag "enterprise_relationship[parent_id]", options_from_collection_for_select(@my_enterprises, :id, :name), include_blank: true, class: "select2 fullwidth", form: "new_enterprise_relationship"
 
   %td
     = t 'admin_enterprise_relationships_permits'
   %td
-    %select.select2.fullwidth{id: "enterprise_relationship_child_id", "ng-model" => "child_id", "ng-options" => "e.id as e.name for e in Enterprises.all_enterprises"}
-  %td
+    = select_tag "enterprise_relationship[child_id]", options_from_collection_for_select(@all_enterprises, :id, :name), include_blank: true, class: "select2 fullwidth", form: "new_enterprise_relationship"
+  %td{ data: { controller: "checked" } }
     %label
-      %input{ type: "checkbox", "ng-checked": "allPermissionsChecked()", "ng-click": "checkAllPermissions()" }
-        = t 'admin_enterprise_relationships_everything'
-    %div{"ng-repeat" => "permission in EnterpriseRelationships.all_permissions"}
-      %label
-        %input{type: "checkbox", "ng-model" => "permissions[permission]"}
-        = t 'admin_enterprise_relationships_to'
-        {{ EnterpriseRelationships.permission_presentation(permission) }}
+      %input{ type: "checkbox", data: { "checked-target": "all" } }
+      = t 'admin_enterprise_relationships_everything'
+    - EnterpriseRelationshipPermission::ALL.each do |permission|
+      %div
+        %label
+          = check_box_tag "enterprise_relationship[permissions_list][]", permission, false, id: "enterprise_relationship_permissions_list_#{permission}", form: "new_enterprise_relationship", data: { "checked-target": "checkbox" }
+          = t('admin_enterprise_relationships_to')
+          = enterprise_relationship_permission_name(permission)
   %td.actions
-    %input{type: "button", value: t(:admin_enterprise_relationships_button_create), "ng-click" => "create()"}
-    .errors {{ EnterpriseRelationships.create_errors }}
+    %input{ type: "submit", value: t(:admin_enterprise_relationships_button_create), form: "new_enterprise_relationship" }
+    #enterprise_relationship_errors.errors

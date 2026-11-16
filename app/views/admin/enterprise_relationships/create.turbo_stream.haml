@@ -1,0 +1,5 @@
+- if @enterprise_relationship.persisted?
+  = turbo_stream.after "enterprise_relationship_form", partial: "enterprise_relationship", locals: { enterprise_relationship: @enterprise_relationship }
+  = turbo_stream.update "enterprise_relationship_errors", ""
+- else
+  = turbo_stream.update "enterprise_relationship_errors", @enterprise_relationship.errors.full_messages.join(", ")

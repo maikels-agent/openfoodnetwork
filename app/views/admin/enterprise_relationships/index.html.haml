@@ -3,10 +3,10 @@
 
 = render 'admin/shared/enterprises_sub_menu'
 
-%div{"ng-app" => "ofn.admin", "ng-controller" => "AdminEnterpriseRelationshipsCtrl"}
-  = render 'data'
-
+%div{ data: { controller: "filter-rows" } }
   = render 'search_input'
+
+  = form_with url: admin_enterprise_relationships_path, id: "new_enterprise_relationship", data: { turbo: true }
 
   %table#enterprise-relationships
     %colgroup
@@ -17,4 +17,4 @@
       %col{ style: "width: 5%" }
     %tbody
       = render 'form'
-      = render 'enterprise_relationship'
+      = render partial: 'enterprise_relationship', collection: @enterprise_relationships

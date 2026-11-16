@@ -35,6 +35,45 @@ create(:enterprise)
       end
     end
 
+    it "searching relationships" do
+      e1 = create(:enterprise, name: 'One')
+      e2 = create(:enterprise, name: 'Two')
+      e3 = create(:enterprise, name: 'Three')
+      create(:enterprise_relationship, parent: e1, child: e2,
+                                       permissions_list: [:add_to_order_cycle])
+      create(:enterprise_relationship, parent: e2, child: e3, permissions_list: [:manage_products])
+
+      visit admin_enterprise_relationships_path
+      fill_in "Search", with: "three"
+
+      expect(page).to have_relationship e2, e3, 'to manage products'
+      expect(page).not_to have_relationship e1, e2, 'to add to order cycle'
+
+      fill_in "Search", with: ""
+      check "add to order cycle", match: :first
+
+      expect(page).to have_field "Search", with: "add_to_order_cycle"
+      expect(page).to have_relationship e1, e2, 'to add to order cycle'
+      expect(page).not_to have_relationship e2, e3, 'to manage products'
+
+      uncheck "add to order cycle", match: :first
+
+      expect(page).to have_relationship e1, e2, 'to add to order cycle'
+      expect(page).to have_relationship e2, e3, 'to manage products'
+    end
+
+    it "selecting all permissions" do
+      visit admin_enterprise_relationships_path
+      check "Everything"
+
+      expect(page).to have_checked_field "to add to order cycle"
+      expect(page).to have_checked_field "to create linked variants [BETA]"
+
+      uncheck "to edit profile"
+
+      expect(page).to have_unchecked_field "Everything"
+    end
+
     it "creating a relationship" do
       e1 = create(:enterprise, name: 'One')
       e2 = create(:enterprise, name: 'Two')
@@ -141,9 +180,9 @@ create(:enterprise)
 
     it "enterprise user can only add their own enterprises as parent" do
       visit admin_enterprise_relationships_path
-      expect(page).to have_select2 'enterprise_relationship_parent_id', options: ['', d1.name]
+      expect(page).to have_select2 'enterprise_relationship_parent_id', options: [d1.name]
       expect(page).to have_select2 'enterprise_relationship_child_id',
-                                   with_options: ['', d1.name, d2.name, d3.name]
+                                   with_options: [d1.name, d2.name, d3.name]
     end
   end
 

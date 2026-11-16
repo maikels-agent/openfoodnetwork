@@ -36,6 +36,26 @@ create(:enterprise)
       end
     end
 
+    it "searching relationships" do
+      u1 = create(:user, email: 'apple@example.com')
+      u2 = create(:user, email: 'berry@example.com')
+      e1 = create(:enterprise, name: 'One')
+      e2 = create(:enterprise, name: 'Two')
+      create(:enterprise_role, user: u1, enterprise: e1)
+      create(:enterprise_role, user: u2, enterprise: e2)
+
+      visit admin_enterprise_roles_path
+      fill_in "Search", with: "berry"
+
+      expect(page).not_to have_relationship u1, e1
+      expect(page).to have_relationship u2, e2
+
+      fill_in "Search", with: "one"
+
+      expect(page).not_to have_relationship u2, e2
+      expect(page).to have_relationship u1, e1
+    end
+
     it "creating a relationship" do
       u = create(:user, email: 'u@example.com')
       e = create(:enterprise, name: 'One')

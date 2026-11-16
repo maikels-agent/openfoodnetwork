@@ -4,18 +4,19 @@ module Admin
   class EnterpriseRolesController < Admin::ResourceController
     def index
       @enterprise_roles, @users, @all_enterprises = Admin::EnterpriseRolesQuery.query
-      @my_enterprises = @all_enterprises
     end
 
     def create
       @enterprise_role = EnterpriseRole.new enterprise_role_params
 
-      if @enterprise_role.save
-        render plain: Api::Admin::EnterpriseRoleSerializer.new(@enterprise_role).to_json
+      status = @enterprise_role.save ? :ok : :unprocessable_entity
 
-      else
-        render status: :bad_request,
-               json: { errors: @enterprise_role.errors.full_messages.join(', ') }
+      respond_to do |format|
+        format.turbo_stream { render :create, status: }
+        format.html do
+          flash[:error] = @enterprise_role.errors.full_messages.to_sentence if status != :ok
+          redirect_to admin_enterprise_roles_path
+        end
       end
     end
 

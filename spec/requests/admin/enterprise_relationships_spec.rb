@@ -4,6 +4,7 @@ RSpec.describe "/admin/enterprise_relationships" do
   let(:enterprise) { create(:supplier_enterprise, name: "Parent") }
   let(:enterprise_user) { create(:user, enterprise_limit: 1) }
   let(:child_enterprise) { create(:supplier_enterprise, name: "Child") }
+  let(:turbo_stream) { { "Accept" => "text/vnd.turbo-stream.html" } }
 
   before do
     enterprise_user.enterprise_roles.build(enterprise:).save
@@ -19,13 +20,10 @@ RSpec.describe "/admin/enterprise_relationships" do
           permissions_list: ["manage_products"]
         }
       }
-      post(admin_enterprise_relationships_path(enterprise), params: )
+      post(admin_enterprise_relationships_path, params:, headers: turbo_stream)
 
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.parsed_body)
-      expect(json["parent_id"]).to eq(enterprise.id)
-      expect(json["child_id"]).to eq(child_enterprise.id)
-      expect(json["permissions"][0]["name"]).to eq("manage_products")
+      expect(response.body).to include "Parent", "Child", "manage products"
 
       relation = EnterpriseRelationship.where(parent: enterprise, child: child_enterprise).first
       expect(relation.permissions_list).to include("manage_products")
@@ -41,7 +39,7 @@ RSpec.describe "/admin/enterprise_relationships" do
             permissions_list: ["manage_products"]
           }
         }
-        post(admin_enterprise_relationships_path(enterprise), params: )
+        post(admin_enterprise_relationships_path, params:, headers: turbo_stream)
 
         expect(response).to redirect_to unauthorized_path
       end
@@ -64,7 +62,7 @@ RSpec.describe "/admin/enterprise_relationships" do
             permissions_list: ["manage_products"]
           }
         }
-        post(admin_enterprise_relationships_path(enterprise), params: )
+        post(admin_enterprise_relationships_path, params:, headers: turbo_stream)
 
         expect(response).to have_http_status(:ok)
 
@@ -75,7 +73,7 @@ RSpec.describe "/admin/enterprise_relationships" do
     end
 
     context "when an error occurs when saving the relationship" do
-      it "returs a bad request with an error message" do
+      it "renders an error message" do
         params = {
           enterprise_relationship: {
             parent_id: enterprise.id,
@@ -84,11 +82,25 @@ RSpec.describe "/admin/enterprise_relationships" do
           }
         }
 
-        post(admin_enterprise_relationships_path(enterprise), params: )
+        post(admin_enterprise_relationships_path, params:, headers: turbo_stream)
 
-        json = response.parsed_body
-        expect(response).to have_http_status(:bad_request)
-        expect(json["errors"]).to eq("Child must exist")
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to include "Child must exist"
+      end
+
+      it "redirects with an error message without Turbo" do
+        params = {
+          enterprise_relationship: {
+            parent_id: enterprise.id,
+            child_id: -99,
+            permissions_list: ["manage_products"]
+          }
+        }
+
+        post(admin_enterprise_relationships_path, params:)
+
+        expect(response).to redirect_to admin_enterprise_relationships_path
+        expect(flash[:error]).to eq "Child must exist"
       end
     end
   end

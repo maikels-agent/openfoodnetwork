@@ -1,9 +1,9 @@
-%tr
+%tr#enterprise_role_form
   %td
-    %select{name: "enterprise_role_user_id", "ng-model" => "user_id", "ng-options" => "u.id as u.email for u in Users.users"}
+    = select_tag "enterprise_role[user_id]", options_for_select(@users.map { |u| [u[:email], u[:id]] }), include_blank: true, form: "new_enterprise_role"
   %td= t('.manages')
   %td
-    %select{name: "enterprise_role_enterprise_id", "ng-model" => "enterprise_id", "ng-options" => "e.id as e.name for e in Enterprises.all_enterprises"}
+    = select_tag "enterprise_role[enterprise_id]", options_for_select(@all_enterprises.map { |e| [e[:name], e[:id]] }), include_blank: true, form: "new_enterprise_role"
   %td.actions
-    %input{type: "button", value: t(:create), "ng-click" => "create()"}
-    .errors {{ EnterpriseRoles.create_errors }}
+    %input{ type: "submit", value: t(:create), form: "new_enterprise_role" }
+    #enterprise_role_errors.errors

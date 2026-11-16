@@ -1,5 +1,6 @@
-%td {{ enterprise_role.user_email }}
-%td= t('.manages')
-%td {{ enterprise_role.enterprise_name }}
-%td.actions
-  %a.delete-enterprise-role.icon-trash.no-text{'ng-click' => 'delete(enterprise_role)'}
+%tr{ id: "enterprise_role_#{enterprise_role[:id]}", data: { "filter-rows-target": "row" } }
+  %td= enterprise_role[:user_email]
+  %td= t('.manages')
+  %td= enterprise_role[:enterprise_name]
+  %td.actions
+    = link_to "", admin_enterprise_role_path(enterprise_role[:id]), class: "delete-enterprise-role icon-trash no-text", "aria-label": t(:delete), data: { turbo: true, turbo_method: :delete, turbo_confirm: t(:are_you_sure) }

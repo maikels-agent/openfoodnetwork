@@ -1,12 +1,14 @@
-%tr{"ng-repeat" => "enterprise_relationship in EnterpriseRelationships.enterprise_relationships | keywords:query"}
-  %td {{ enterprise_relationship.parent_name }}
+- permissions = enterprise_relationship.permissions.map(&:name).sort
+%tr{ id: dom_id(enterprise_relationship), data: { "filter-rows-target": "row", "filter-rows-keywords": permissions.join(" ") } }
+  %td= enterprise_relationship.parent.name
   %td
     = t 'admin_enterprise_relationships_permits'
-  %td {{ enterprise_relationship.child_name }}
+  %td= enterprise_relationship.child.name
   %td
     %ul
-      %li{"ng-repeat" => "permission in enterprise_relationship.permissions"}
-        = t 'admin_enterprise_relationships_to'
-        {{ EnterpriseRelationships.permission_presentation(permission.name) }}
+      - permissions.each do |permission|
+        %li
+          = t('admin_enterprise_relationships_to')
+          = enterprise_relationship_permission_name(permission)
   %td.actions
-    %a.delete-enterprise-relationship.icon-trash.no-text{'ng-click' => 'delete(enterprise_relationship)'}
+    = link_to "", admin_enterprise_relationship_path(enterprise_relationship), class: "delete-enterprise-relationship icon-trash no-text", "aria-label": t(:delete), data: { turbo: true, turbo_method: :delete, turbo_confirm: t(:are_you_sure) }

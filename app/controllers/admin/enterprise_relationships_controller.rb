@@ -22,19 +22,27 @@ module Admin
 
       @enterprise_relationship = EnterpriseRelationship.new enterprise_relationship_params
 
-      if @enterprise_relationship.save
-        render plain: Api::Admin::EnterpriseRelationshipSerializer
-          .new(@enterprise_relationship).to_json
-      else
-        render status: :bad_request,
-               json: { errors: @enterprise_relationship.errors.full_messages.join(', ') }
+      status = @enterprise_relationship.save ? :ok : :unprocessable_entity
+
+      respond_to do |format|
+        format.turbo_stream { render :create, status: }
+        format.html do
+          if status != :ok
+            flash[:error] = @enterprise_relationship.errors.full_messages.to_sentence
+          end
+          redirect_to admin_enterprise_relationships_path
+        end
       end
     end
 
     def destroy
       @enterprise_relationship = EnterpriseRelationship.find params[:id]
       @enterprise_relationship.destroy
-      render body: nil
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to admin_enterprise_relationships_path }
+      end
     end
 
     private

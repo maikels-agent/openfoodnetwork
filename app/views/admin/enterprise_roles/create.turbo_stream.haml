@@ -1,0 +1,6 @@
+- if @enterprise_role.persisted?
+  - enterprise_role = { id: @enterprise_role.id, user_email: @enterprise_role.user.email, enterprise_name: @enterprise_role.enterprise.name }
+  = turbo_stream.after "enterprise_role_form", partial: "enterprise_role", locals: { enterprise_role: }
+  = turbo_stream.update "enterprise_role_errors", ""
+- else
+  = turbo_stream.update "enterprise_role_errors", @enterprise_role.errors.full_messages.join(", ")
