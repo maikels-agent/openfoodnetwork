@@ -44,12 +44,6 @@ module ApplicationHelper
     end.join("\n").html_safe # rubocop:disable Rails/OutputSafety
   end
 
-  def ng_form_for(name, *args, &)
-    options = args.extract_options!
-
-    form_for(name, *(args << options.merge(builder: AngularFormBuilder)), &)
-  end
-
   def body_classes(hide_menu, shopfront_layout)
     classes = []
     classes << "off-canvas" unless hide_menu

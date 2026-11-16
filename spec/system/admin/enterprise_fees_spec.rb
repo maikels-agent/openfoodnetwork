@@ -28,6 +28,40 @@ RSpec.describe '
     expect(page).to have_selector "input[value='#{amount}']"
   end
 
+  it "searching enterprise fees" do
+    create(:enterprise_fee, name: "Apple packing", fee_type: "packing")
+    create(:enterprise_fee, name: "Berry transport", fee_type: "transport")
+
+    login_as_admin
+    visit admin_enterprise_fees_path
+    fill_in "Search", with: "berry"
+
+    expect(page).to have_field with: "Berry transport"
+    expect(page).not_to have_field with: "Apple packing"
+
+    fill_in "Search", with: "packing"
+
+    expect(page).to have_field with: "Apple packing"
+    expect(page).not_to have_field with: "Berry transport"
+  end
+
+  it "hides calculator settings when changing the calculator type" do
+    create(:enterprise_fee)
+
+    login_as_admin
+    visit admin_enterprise_fees_path
+
+    expect(page).to have_field "Amount:"
+
+    select "Flat Percent (per item)", from: "#{prefix}_calculator_type"
+
+    expect(page).not_to have_field "Amount:"
+
+    select "Flat Rate (per item)", from: "#{prefix}_calculator_type"
+
+    expect(page).to have_field "Amount:"
+  end
+
   it "creating an enterprise fee" do
     # Given an enterprise
     e = create(:supplier_enterprise, name: 'Feedme')

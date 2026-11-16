@@ -8,7 +8,6 @@ module Admin
     before_action :load_data
 
     def index
-      @include_calculators = params[:include_calculators].present?
       @enterprise = current_enterprise
       @enterprises = managed_enterprises
 
@@ -16,12 +15,12 @@ module Admin
       blank_enterprise_fee.enterprise = current_enterprise
 
       @collection = @collection.to_a
-      3.times { @collection << blank_enterprise_fee }
+      3.times { @collection << blank_enterprise_fee.dup }
 
       respond_to do |format|
         format.html
         format.json {
-          render_as_json @collection, controller: self, include_calculators: @include_calculators
+          render_as_json @collection, controller: self
         }
       end
     end
@@ -116,6 +115,7 @@ module Admin
       end
 
       matching = matching.map do |fee_param|
+        apply_tax_category_inheritance(fee_param)
         fee_param.permit(
           :id, :enterprise_id, :fee_type, :name, :tax_category_id,
           :inherits_tax_category, :calculator_type,
@@ -130,6 +130,20 @@ module Admin
         parameters[:collection_attributes][i.to_s] = fee_param
       }
       parameters
+    end
+
+    # The form presents inheriting the tax category from the product as
+    # another tax category to choose.
+    def apply_tax_category_inheritance(fee_param)
+      return unless fee_param.key?(:tax_category_id)
+
+      inherited_id = EnterpriseFeesHelper::INHERITED_TAX_CATEGORY_ID.to_s
+      if fee_param[:tax_category_id] == inherited_id
+        fee_param[:tax_category_id] = ""
+        fee_param[:inherits_tax_category] = "true"
+      elsif !fee_param.key?(:inherits_tax_category)
+        fee_param[:inherits_tax_category] = "false"
+      end
     end
   end
 end
