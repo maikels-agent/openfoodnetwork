@@ -11,6 +11,51 @@ $(document).ready(function() {
     window.variantTemplate = Handlebars.compile($('#variant_autocomplete_template').text());
     window.variantStockTemplate = Handlebars.compile($('#variant_autocomplete_stock_template').text());
 
+    // Search for variants to add to the order.
+    // Pages using AngularJS initialise this field with the variantAutocomplete directive.
+    var addVariant = $('#add_variant_id[data-order-id]');
+    if (addVariant.length > 0 && Spree.routes) {
+      addVariant.select2({
+        placeholder: t('admin.orders.select_variant'),
+        minimumInputLength: 3,
+        formatInputTooShort: function() {
+          return t('admin.select2.minimal_search_length', { count: 3 });
+        },
+        formatSearching: function() {
+          return t('admin.select2.searching');
+        },
+        formatNoMatches: function() {
+          return t('admin.select2.no_matches');
+        },
+        ajax: {
+          url: Spree.routes.variants_search,
+          datatype: "json",
+          quietMillis: 500, // debounce
+          data: function(term, page) {
+            return {
+              q: term,
+              // The distribution can be changed further down the page once the order has items.
+              distributor_id: $('#order_distributor_id').val() || addVariant.data('distributor-id'),
+              order_cycle_id: $('#order_order_cycle_id').val() || addVariant.data('order-cycle-id'),
+              include_out_of_stock: $('#include_out_of_stock').is(':checked') ? "1" : "",
+              search_variants_as: addVariant.data('search-variants-as'),
+              order_id: addVariant.data('order-id')
+            };
+          },
+          results: function(data, page) {
+            window.variants = data; // used below to find the selected variant
+            return { results: data };
+          }
+        },
+        formatResult: function(variant) {
+          return variantTemplate({ variant: variant });
+        },
+        formatSelection: function(variant) {
+          return variant.name;
+        }
+      });
+    }
+
     // handle variant selection, show stock level.
     $('#add_variant_id').change(function(){
       var variant_id = $(this).val();

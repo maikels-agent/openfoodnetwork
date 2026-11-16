@@ -11,7 +11,7 @@
     - else
       .field.nine.columns.alpha
         = label_tag :add_variant_id, Spree.t(:name_or_sku)
-        = hidden_field_tag :add_variant_id, "", :class => "variant_autocomplete fullwidth"
+        = hidden_field_tag :add_variant_id, "", class: "variant_autocomplete fullwidth", data: { "order-id": @order.id, "distributor-id": @order.distributor_id, "order-cycle-id": @order.order_cycle_id, "search-variants-as": (can?(:manage_order_sections, @order) ? 'hub' : 'supplier') }
       .five.columns.omega
         .field
           = label_tag 'include_out_of_stock', t(".include_out_of_stock_variants")

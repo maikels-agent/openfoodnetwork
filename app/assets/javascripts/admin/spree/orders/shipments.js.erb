@@ -1,6 +1,11 @@
 // Shipments AJAX API
 
 $(document).ready(function() {
+  // The action links below have no destination. Following them would reload the page.
+  $('.admin-order-edit-form').on('click', 'a[href=""]', function(event) {
+    event.preventDefault();
+  });
+
   //handle shipping method edit click
   $('a.edit-method').click(toggleMethodEdit);
   $('a.cancel-method').click(toggleMethodEdit);

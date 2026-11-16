@@ -33,9 +33,8 @@ RSpec.describe '
 
   def new_order_with_distribution(distributor, order_cycle)
     visit new_admin_order_path
-    expect(page).to have_selector('#s2id_order_distributor_id')
-    select2_select distributor.name, from: 'order_distributor_id'
-    select2_select order_cycle.name, from: 'order_order_cycle_id'
+    tomselect_select distributor.name, from: 'order_distributor_id'
+    tomselect_select order_cycle.name, from: 'order_order_cycle_id'
     click_button 'Next'
   end
 
@@ -659,13 +658,15 @@ RSpec.describe '
       page.has_selector? "table.index tbody tr"
       expect(page).to have_selector 'td', text: supplier1_product.name
 
-      expect(page).to have_select2 'order_distributor_id', with_options: [distributor1.name]
-      expect(page).not_to have_select2 'order_distributor_id', with_options: [distributor2.name]
+      expect(page).to have_select 'order_distributor_id', visible: :all,
+                                                          with_options: [distributor1.name]
+      expect(page).not_to have_select 'order_distributor_id', visible: :all,
+                                                              with_options: [distributor2.name]
 
-      expect(page).to have_select2 'order_order_cycle_id',
-                                   with_options: ["#{order_cycle1.name} (open)"]
-      expect(page).not_to have_select2 'order_order_cycle_id',
-                                       with_options: ["#{order_cycle2.name} (open)"]
+      expect(page).to have_select 'order_order_cycle_id',
+                                  visible: :all, with_options: ["#{order_cycle1.name} (open)"]
+      expect(page).not_to have_select 'order_order_cycle_id',
+                                      visible: :all, with_options: ["#{order_cycle2.name} (open)"]
 
       click_button 'Update'
 

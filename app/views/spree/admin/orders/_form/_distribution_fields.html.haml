@@ -13,23 +13,23 @@
         = @order.order_cycle&.name || t(:none)
         %input{type: "hidden", id: "order_order_cycle_id", value: @order.order_cycle&.id}
   - else
-    .alpha.six.columns
-      .field
-        %label{for: "order_distributor_id"}= t(:distributor)
-        %input.ofn-select2.fullwidth{id: "order_distributor_id",
-        type: 'number',
-        name: "order[distributor_id]",
-        "ng-model" => 'distributor_id',
-        data: "shops" }
+    :ruby
+      order_cycle_options = order_cycle_options_by_distributor(@shops, @order_cycles)
+      current_order_cycle_options = order_cycle_options.to_h[@order.distributor_id] || []
+      dependent_select = { controller: "dependent-select", "dependent-select-options-value": order_cycle_options.to_json }
+    %div{ data: dependent_select }
+      .alpha.six.columns
+        .field
+          = label_tag :order_distributor_id, t(:distributor)
+          = select_tag "order[distributor_id]",
+            options_for_select(distributor_options(@shops, order_cycle_options), @order.distributor_id),
+            include_blank: true, class: "primary fullwidth",
+            data: { controller: "tom-select", "dependent-select-target": "source", action: "dependent-select#handleSelectChange" }
 
-    .omega.six.columns
-      .field
-        %label{for: "order_order_cycle_id"}= t(:order_cycle)
-        %input.ofn-select2.fullwidth{id: "order_order_cycle_id",
-        type: 'number',
-        name: "order[order_cycle_id]",
-        "ng-model" => 'order_cycle_id',
-        "ng-disabled" => "!distributor_id",
-        data: "orderCycles",
-        text: "name_and_status",
-        filter: "validOrderCycle" }
+      .omega.six.columns
+        .field
+          = label_tag :order_order_cycle_id, t(:order_cycle)
+          = select_tag "order[order_cycle_id]",
+            options_for_select(current_order_cycle_options, @order.order_cycle_id),
+            include_blank: true, class: "primary fullwidth", disabled: current_order_cycle_options.empty?,
+            data: { controller: "tom-select", "dependent-select-target": "select", action: "toggle-control#enableIfPresent" }

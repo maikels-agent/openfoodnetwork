@@ -33,9 +33,8 @@ RSpec.describe '
 
   def new_order_with_distribution(distributor, order_cycle)
     visit new_admin_order_path
-    expect(page).to have_selector('#s2id_order_distributor_id')
-    select2_select distributor.name, from: 'order_distributor_id'
-    select2_select order_cycle.name, from: 'order_order_cycle_id'
+    tomselect_select distributor.name, from: 'order_distributor_id'
+    tomselect_select order_cycle.name, from: 'order_order_cycle_id'
     click_button 'Next'
   end
 
@@ -48,18 +47,19 @@ RSpec.describe '
     click_link 'New Order'
 
     # Distributors without an order cycle should be shown as disabled
-    open_select2('#s2id_order_distributor_id')
-    expect(page).to have_selector "ul.select2-results li.select2-result.select2-disabled",
-                                  text: distributor_disabled.name
-    close_select2
+    expect(page).to have_css "#order_distributor_id option[disabled]",
+                             text: distributor_disabled.name, visible: :all
 
     # Order cycle selector should be disabled
-    expect(page).to have_selector "#s2id_order_order_cycle_id.select2-container-disabled"
+    expect(page).to have_css "#order_order_cycle_id + .ts-wrapper.disabled"
 
     # The distributor selector should limit the order cycle selection to those for that distributor
-    select2_select distributor.name, from: 'order_distributor_id'
-    expect(page).to have_select2 'order_order_cycle_id', options: ['One (open)']
-    select2_select order_cycle.name, from: 'order_order_cycle_id'
+    tomselect_select distributor.name, from: 'order_distributor_id'
+    expect(page).to have_select 'order_order_cycle_id', visible: :all,
+                                                        with_options: ['One (open)']
+    expect(page).not_to have_select 'order_order_cycle_id', visible: :all,
+                                                            with_options: ['Two (open)']
+    tomselect_select order_cycle.name, from: 'order_order_cycle_id'
     click_button 'Next'
 
     expect(page).not_to have_selector '.flash.error'
@@ -98,7 +98,7 @@ RSpec.describe '
     end
 
     it 'shows error when order cycle is not selected' do
-      select2_select distributor.name, from: 'order_distributor_id'
+      tomselect_select distributor.name, from: 'order_distributor_id'
       click_button 'Next'
 
       expect(page).to have_content "Order cycle can't be blank"
@@ -319,9 +319,9 @@ RSpec.describe '
 
     click_button 'Dismiss'
 
-    expect(page).to have_select2 "order_distributor_id", with_options: [d.name]
-    select2_select d.name, from: 'order_distributor_id'
-    select2_select oc.name, from: 'order_order_cycle_id'
+    expect(page).to have_select "order_distributor_id", with_options: [d.name], visible: :all
+    tomselect_select d.name, from: 'order_distributor_id'
+    tomselect_select oc.name, from: 'order_order_cycle_id'
 
     click_button 'Update And Recalculate Fees'
     expect(page).to have_content "Distributor or order cycle " \
@@ -528,8 +528,8 @@ RSpec.describe '
     login_as_admin
     visit edit_admin_order_path(order)
 
-    expect(page).not_to have_select2 'order_distributor_id'
-    expect(page).not_to have_select2 'order_order_cycle_id'
+    expect(page).not_to have_select 'order_distributor_id', visible: :all
+    expect(page).not_to have_select 'order_order_cycle_id', visible: :all
 
     expect(page).to have_selector 'p', text: "Distributor: #{order.distributor.name}"
     expect(page).to have_selector 'p', text: "Order cycle: #{order.order_cycle.name}"

@@ -465,8 +465,8 @@ RSpec.describe "
       before do
         login_as_admin
         visit new_admin_order_path
-        select2_select distributor.name, from: 'order_distributor_id'
-        select2_select order_cycle.name, from: 'order_order_cycle_id'
+        tomselect_select distributor.name, from: 'order_distributor_id'
+        tomselect_select order_cycle.name, from: 'order_order_cycle_id'
         click_button 'Next'
         click_link "Order Details"
       end

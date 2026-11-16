@@ -137,14 +137,6 @@ module Admin
                        json: "{coordinator_id: '#{order_cycle.coordinator.id}'}" }
     end
 
-    def admin_inject_order_cycles(order_cycles)
-      admin_inject_json_ams_array "admin.orders",
-                                  "orderCycles",
-                                  order_cycles,
-                                  Api::Admin::BasicOrderCycleSerializer,
-                                  current_user: spree_current_user
-    end
-
     def admin_inject_spree_api_key(spree_api_key)
       render partial: "admin/json/injection_ams",
              locals: { ngModule: 'admin.indexUtils',
