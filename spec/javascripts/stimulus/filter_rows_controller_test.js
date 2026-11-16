@@ -18,8 +18,9 @@ describe("FilterRowsController", () => {
         <input id="toggle" type="checkbox" data-action="filter-rows#toggleKeyword"
           data-filter-rows-keyword-param="manage_products" />
         <table>
-          <tr id="apple" data-filter-rows-target="row" data-filter-rows-keywords="manage_products">
-            <td>Apple Farm</td><td>Fruit Hub</td>
+          <tr id="apple" data-filter-rows-target="row"
+            data-filter-rows-keywords="Apple Farm Fruit Hub manage_products">
+            <td><input value="Apple Farm" /></td><td>Fruit Hub</td><td>Berry not selected</td>
           </tr>
           <tr id="berry" data-filter-rows-target="row">
             <td>Berry Farm</td><td>Fruit Hub</td>
@@ -56,7 +57,7 @@ describe("FilterRowsController", () => {
     expect(hidden("berry")).toBe(false);
   });
 
-  it("matches keywords which are not part of the text", () => {
+  it("matches keywords instead of the text if present", () => {
     search("manage_products");
 
     expect(hidden("apple")).toBe(false);

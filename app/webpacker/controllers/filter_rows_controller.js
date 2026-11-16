@@ -3,7 +3,8 @@ import { Controller } from "stimulus";
 // Filters a list of rows on the client side.
 //
 // A row is shown if it contains all words of the query. Words are matched
-// against the row's text and its optional `data-filter-rows-keywords`.
+// against the row's text, or against `data-filter-rows-keywords` if present.
+// Keywords are useful when the row contains form fields.
 //
 //   %div{ "data-controller": "filter-rows" }
 //     %input{ "data-filter-rows-target": "query", "data-action": "input->filter-rows#filter" }
@@ -51,7 +52,7 @@ export default class extends Controller {
   }
 
   #matches(row, words) {
-    const text = `${row.textContent} ${row.dataset.filterRowsKeywords || ""}`.toLowerCase();
+    const text = (row.dataset.filterRowsKeywords ?? row.textContent).toLowerCase();
 
     return words.every((word) => text.includes(word));
   }

@@ -1,5 +1,6 @@
 - permissions = enterprise_relationship.permissions.map(&:name).sort
-%tr{ id: dom_id(enterprise_relationship), data: { "filter-rows-target": "row", "filter-rows-keywords": permissions.join(" ") } }
+- keywords = [enterprise_relationship.parent.name, enterprise_relationship.child.name, *permissions]
+%tr{ id: dom_id(enterprise_relationship), data: { "filter-rows-target": "row", "filter-rows-keywords": keywords.join(" ") } }
   %td= enterprise_relationship.parent.name
   %td
     = t 'admin_enterprise_relationships_permits'
