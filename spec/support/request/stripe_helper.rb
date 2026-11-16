@@ -9,7 +9,6 @@ module StripeHelper
 
   def fill_in_card_details_in_backoffice
     choose "StripeSCA"
-    fill_in "cardholder_name", with: "David Gilmour"
     fill_in "stripe-cardnumber", with: "4242424242424242"
     fill_in "exp-date", with: "01-01-2050"
     fill_in "cvc", with: "678"

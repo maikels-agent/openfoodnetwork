@@ -2,6 +2,7 @@ import { Controller } from "stimulus";
 
 export default class extends Controller {
   static targets = ["cardElement", "cardErrors", "expMonth", "expYear", "brand", "last4", "pmId"];
+  static values = { hidePostalCode: { type: Boolean, default: true } };
   static styles = {
     base: {
       fontFamily: "Roboto, Arial, sans-serif",
@@ -21,7 +22,7 @@ export default class extends Controller {
     this.stripe = Stripe(this.data.get("key"));
     this.stripeElement = this.stripe.elements({ locale: I18n.base_locale }).create("card", {
       style: this.constructor.styles,
-      hidePostalCode: true,
+      hidePostalCode: this.hidePostalCodeValue,
     });
 
     // Mount Stripe Elements JS to the form field
@@ -59,7 +60,9 @@ export default class extends Controller {
         this.last4Target.setAttribute("value", response.paymentMethod.card.last4);
         this.catchFormSubmit = false;
 
-        event.submitter.click();
+        // Stripe may respond before the browser finished dispatching the first
+        // submit event. A form can't be submitted again until then.
+        setTimeout(() => event.submitter.click());
       }
     });
   };

@@ -11,12 +11,11 @@
 - if @payment_methods.any?
   = render partial: 'spree/shared/error_messages', locals: { target: @payment }
 
-  = form_for @payment, url: admin_order_payments_path(@order), html: {"ng-app" => "admin.payments", "ng-controller" => "PaymentCtrl"} do |f|
-    %save-bar{ persist: "true" }
+  = form_for @payment, url: admin_order_payments_path(@order), html: { data: { controller: "submit-once", action: "submit@window->submit-once#guard" } } do |f|
     %fieldset.no-border-top
       = render partial: 'form', locals: { f: f }
       .filter-actions.actions
-        = button_tag t(:update), type: 'button', "ng-click" => "submitPayment()"
+        = button_tag t(:update), type: 'submit'
 
 - else
   = Spree.t(:cannot_create_payment_without_payment_methods)
