@@ -25,7 +25,7 @@ div.dashboard_item {
     border: 1px solid $spree-blue;
     position: relative;
 
-    a[ofn-with-tip] {
+    a.with-tip {
       position: absolute;
       right: 5px;
       bottom: 5px;

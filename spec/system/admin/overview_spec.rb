@@ -83,6 +83,14 @@ RSpec.describe '
                                       text: "MANAGE MY ENTERPRISES"
       end
 
+      it "explains dashboard items in tooltips" do
+        visit '/admin'
+
+        within(".dashboard_item#products") { find("a.with-tip").hover }
+
+        expect(page).to have_content "The products that you sell through the Open Food Network."
+      end
+
       context "but no products or order cycles" do
         it "prompts the user to create a new product and to manage order cycles" do
           visit '/admin'

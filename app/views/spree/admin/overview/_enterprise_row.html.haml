@@ -5,27 +5,27 @@
     - if can?(:admin, Spree::PaymentMethod) && enterprise.is_distributor
       - payment_method_count = enterprise.payment_methods.count
       - if payment_method_count > 0
-        %span.icon-ok-sign{ 'ofn-with-tip' => "#{pluralize payment_method_count, 'payment method'}" }
+        %span.icon-ok-sign.with-tip{ 'data-powertip' => "#{pluralize payment_method_count, 'payment method'}" }
       - else
-        %span.icon-remove-sign{ 'ofn-with-tip' => t('.has_no_payment_methods', enterprise: enterprise.name) }
+        %span.icon-remove-sign.with-tip{ 'data-powertip' => t('.has_no_payment_methods', enterprise: enterprise.name) }
     - else
       &nbsp;
   %span.symbol.three.columns.centered
     - if can?(:admin, Spree::ShippingMethod) && enterprise.is_distributor
       - shipping_method_count = enterprise.shipping_methods.count
       - if shipping_method_count > 0
-        %span.icon-ok-sign{ 'ofn-with-tip' => "#{pluralize shipping_method_count, 'shipping method'}" }
+        %span.icon-ok-sign.with-tip{ 'data-powertip' => "#{pluralize shipping_method_count, 'shipping method'}" }
       - else
-        %span.icon-remove-sign{ 'ofn-with-tip' => t('.has_no_shipping_methods', enterprise: enterprise.name) }
+        %span.icon-remove-sign.with-tip{ 'data-powertip' => t('.has_no_shipping_methods', enterprise: enterprise.name) }
     - else
       &nbsp;
   %span.symbol.three.columns.centered
     - if can?(:admin, EnterpriseFee) && enterprise.is_distributor
       - fee_count = enterprise.enterprise_fees.count
       - if fee_count > 0
-        %span.icon-ok-sign{ 'ofn-with-tip' => "#{pluralize fee_count, 'fee'}" }
+        %span.icon-ok-sign.with-tip{ 'data-powertip' => "#{pluralize fee_count, 'fee'}" }
       - else
-        %span.icon-warning-sign{ 'ofn-with-tip' => t('.has_no_enterprise_fees', enterprise: enterprise.name) }
+        %span.icon-warning-sign.with-tip{ 'data-powertip' => t('.has_no_enterprise_fees', enterprise: enterprise.name) }
     - else
       &nbsp;
   %span.two.columns.omega.right

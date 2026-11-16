@@ -8,7 +8,7 @@
       %a.six.columns.omega.icon-plus.button{ href: new_admin_product_path }
         = t "spree_admin_enterprises_create_new"
     - else
-      %a{ "ofn-with-tip" => t(".products_tip") }
+      %a.with-tip{ 'data-powertip' => t(".products_tip") }
         = t "admin.whats_this"
   .sixteen.columns.alpha.list
     .sixteen.columns.alpha.list-item{class: color_class}
