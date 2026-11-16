@@ -1,5 +1,3 @@
-= admin_inject_available_units
-
 - content_for :page_actions do
   %li= button_link_to t('admin.products.back_to_products_list'), products_return_to_url, :icon => 'icon-arrow-left'
   %li#new_product_link
@@ -11,7 +9,7 @@
 = render :partial => 'spree/shared/error_messages', :locals => { :target => @product }
 
 = form_for [:admin, @product], :url => admin_product_path(@product, @url_filters), :method => :put, :html => { :multipart => true } do |f|
-  %fieldset.no-border-top{'ng-app': 'admin.products', 'data-turbo': true, 'data-controller': "product-preview"}
+  %fieldset.no-border-top{'data-turbo': true, 'data-controller': "product-preview"}
     = render :partial => 'form', :locals => { :f => f }
     .form-buttons.filter-actions.actions
       = link_to t("admin.products_page.actions.preview"), Rails.application.routes.url_helpers.admin_product_preview_path(@product), {"data-turbo-stream": "" , class: "button secondary"} 

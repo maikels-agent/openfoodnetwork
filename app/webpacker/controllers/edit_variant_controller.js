@@ -4,34 +4,44 @@ import UnitPrices from "js/services/unit_prices";
 
 // Dynamically update related variant fields
 //
+// The fields are found by their id which starts with the name of the form's
+// model. That's "variant" by default. The new product form contains the same
+// fields for the product's first variant:
+//
+//   %fieldset{ data: { controller: "edit-variant", "edit-variant-prefix-value": "product" } }
+//
+// Optional targets are only shown for certain units:
+//
+//   %div{ data: { "edit-variant-target": "itemsOnly" } }
+//   %div{ data: { "edit-variant-target": "unlessItems" } }
+//
 // TODO refactor so we can extract what's common with Bulk product page
 export default class EditVariantController extends Controller {
-  static targets = ["onHand"];
+  static targets = ["onHand", "itemsOnly", "unlessItems"];
+  static values = { prefix: { type: String, default: "variant" } };
 
   connect() {
     this.unitPrices = new UnitPrices();
     // idea: create a helper that includes a nice getter/setter for Rails model attr values, just pass it the attribute name.
     // It could automatically find (and cache a ref to) each dom element and get/set the values.
-    this.variantUnit = this.element.querySelector('[id="variant_variant_unit"]');
-    this.variantUnitScale = this.element.querySelector('[id="variant_variant_unit_scale"]');
-    this.variantUnitName = this.element.querySelector('[id="variant_variant_unit_name"]');
-    this.variantUnitWithScale = this.element.querySelector(
-      '[id="variant_variant_unit_with_scale"]',
-    );
-    this.variantPrice = this.element.querySelector('[id="variant_price"]');
+    this.variantUnit = this.#field("variant_unit");
+    this.variantUnitScale = this.#field("variant_unit_scale");
+    this.variantUnitName = this.#field("variant_unit_name");
+    this.variantUnitWithScale = this.#field("variant_unit_with_scale");
+    this.variantPrice = this.#field("price");
 
     // on variant_unit_with_scale changed; update variant_unit and variant_unit_scale
     this.variantUnitWithScale.addEventListener("change", this.#updateUnitAndScale.bind(this), {
       passive: true,
     });
 
-    this.unitValue = this.element.querySelector('[id="variant_unit_value"]');
-    this.unitDescription = this.element.querySelector('[id="variant_unit_description"]');
-    this.unitValueWithDescription = this.element.querySelector(
-      '[id="variant_unit_value_with_description"]',
-    );
-    this.displayAs = this.element.querySelector('[id="variant_display_as"]');
-    this.unitToDisplay = this.element.querySelector('[id="variant_unit_to_display"]');
+    this.unitValue = this.#field("unit_value");
+    this.unitDescription = this.#field("unit_description");
+    this.unitValueWithDescription = this.#field("unit_value_with_description");
+    this.displayAs = this.#field("display_as");
+    this.unitToDisplay = this.#field("unit_to_display");
+    this.unitPrice = this.#field("unit_price");
+    this.weight = this.#field("weight");
 
     // on unit changed; update display_as:placeholder and unit_to_display
     [this.variantUnit, this.variantUnitScale, this.variantUnitName].forEach((element) => {
@@ -53,12 +63,24 @@ export default class EditVariantController extends Controller {
     [this.variantUnitWithScale, this.variantPrice].forEach((element) => {
       element.addEventListener("change", this.#processUnitPrice.bind(this), { passive: true });
     });
+    this.variantPrice.addEventListener("input", this.#processUnitPrice.bind(this), {
+      passive: true,
+    });
+    this.variantUnitName.addEventListener("input", this.#processUnitPrice.bind(this), {
+      passive: true,
+    });
     this.unitValueWithDescription.addEventListener("input", this.#processUnitPrice.bind(this), {
       passive: true,
     });
 
     // on variantUnit change we need to check if weight needs to be toggled
     this.variantUnit.addEventListener("change", this.#toggleWeight.bind(this), { passive: true });
+
+    // on variantUnit change; show only the fields relevant to that unit
+    this.variantUnit.addEventListener("change", this.#toggleUnitFields.bind(this), {
+      passive: true,
+    });
+    this.#toggleUnitFields();
 
     // make sure the unit is correct when page is reload after an error
     this.#updateUnitDisplay();
@@ -105,8 +127,11 @@ export default class EditVariantController extends Controller {
     const match = this.unitValueWithDescription.value.match(/^([\d\.\,]+(?= |$)|)( |)(.*)$/);
     if (match) {
       let unit_value = parseFloat(match[1].replace(",", "."));
-      unit_value = isNaN(unit_value) ? null : unit_value;
-      unit_value *= this.variantUnitScale.value ? this.variantUnitScale.value : 1; // Normalise to default scale
+      if (isNaN(unit_value)) {
+        unit_value = ""; // A missing value is not zero.
+      } else {
+        unit_value *= this.variantUnitScale.value ? this.variantUnitScale.value : 1; // Normalise to default scale
+      }
 
       this.unitValue.value = unit_value;
       this.unitDescription.value = match[3];
@@ -117,7 +142,9 @@ export default class EditVariantController extends Controller {
   #updateUnitDisplay() {
     const unitDisplay = new OptionValueNamer(this.#variant()).name();
     this.displayAs.placeholder = unitDisplay;
-    this.unitToDisplay.textContent = this.displayAs.value || unitDisplay;
+    if (this.unitToDisplay) {
+      this.unitToDisplay.textContent = this.displayAs.value || unitDisplay;
+    }
   }
 
   // A representation of the variant model to satisfy OptionValueNamer.
@@ -166,11 +193,31 @@ export default class EditVariantController extends Controller {
       this.variantUnitName.value,
     );
 
-    this.element.querySelector('[id="variant_unit_price"]').value = unit_price;
+    this.unitPrice.value = unit_price;
+  }
+
+  #field(name) {
+    return this.element.querySelector(`[id="${this.prefixValue}_${name}"]`);
+  }
+
+  #toggleUnitFields() {
+    const items = this.variantUnit.value === "items";
+
+    this.itemsOnlyTargets.forEach((element) => this.#toggleFields(element, items));
+    this.unlessItemsTargets.forEach((element) => this.#toggleFields(element, !items));
+  }
+
+  // Hidden fields are disabled so that they are not submitted.
+  #toggleFields(element, show) {
+    element.style.display = show ? "" : "none";
+    element.querySelectorAll("input, select").forEach((field) => {
+      field.disabled = !show;
+    });
   }
 
   #hideWeight() {
-    this.weight = this.element.querySelector('[id="variant_weight"]');
+    if (!this.weight) return;
+
     this.weight.parentElement.style.display = "none";
   }
 
@@ -178,9 +225,9 @@ export default class EditVariantController extends Controller {
     if (this.variantUnit.value === "weight") {
       return this.#hideWeight();
     }
+    if (!this.weight) return;
 
     // Show weight
-    this.weight = this.element.querySelector('[id="variant_weight"]');
     this.weight.parentElement.style.display = "block";
     // Clearing weight value to remove calculated weight for a variant with unit set to "weight"
     // See Spree::Variant hook update_weight_from_unit_value

@@ -58,11 +58,7 @@
         = f.field_container :unit_price do
           %div{style: "display: flex"}
             = f.label :unit_price, t(".unit_price"), {style: "display: inline-block"}
-            %question-mark-with-tooltip{"question-mark-with-tooltip" => "_",
-              "question-mark-with-tooltip-append-to-body" => "true",
-              "question-mark-with-tooltip-placement" => "top",
-              "question-mark-with-tooltip-animation" => true, 
-              key: "'js.admin.unit_price_tooltip'"}
+            = render TooltipComponent.new(text: t('js.admin.unit_price_tooltip'), element_text: "", element_class: "question-mark-icon")
           %input{ "type" => "text", "id" => "variant_unit_price", "name" => "variant[unit_price]", "class" => 'fullwidth', "disabled" => true}
           %div{style: "color: black"}
             = t("spree.admin.products.new.unit_price_legend")

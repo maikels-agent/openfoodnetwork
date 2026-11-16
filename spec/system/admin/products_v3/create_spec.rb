@@ -24,7 +24,7 @@ RSpec.describe 'As an enterprise user, I can manage my products' do
       fill_in 'product_name', with: 'Big Bag Of Apples'
       tomselect_select supplier.name, from: "Enterprise"
       tomselect_search_and_select 'Weight (g)', from: "product_variant_unit_with_scale"
-      fill_in 'product_unit_value', with: '100'
+      fill_in 'product_unit_value_with_description', with: '100'
       fill_in 'product_price', with: '10.00'
       # TODO dropdowns below are still using select2:
       select taxon.name, from: 'product_primary_taxon_id' # ...instead of tom-select

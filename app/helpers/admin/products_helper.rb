@@ -76,6 +76,25 @@ module Admin
       end
     end
 
+    # A new product holds the attributes of its first variant as submitted,
+    # without type casting.
+    def product_unit_value_with_description(product)
+      variant = Spree::Variant.new(
+        unit_value: product.unit_value.presence,
+        unit_description: product.unit_description,
+        variant_unit_scale: product.variant_unit_scale.presence,
+      )
+
+      unit_value_with_description(variant)
+    end
+
+    def product_variant_unit_with_scale(product)
+      Spree::Variant.new(
+        variant_unit: product.variant_unit,
+        variant_unit_scale: product.variant_unit_scale.presence,
+      ).variant_unit_with_scale
+    end
+
     def unit_value_with_description(variant)
       return variant.unit_description.to_s if variant.unit_value.nil?
 

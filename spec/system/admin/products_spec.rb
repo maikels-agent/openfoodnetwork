@@ -25,7 +25,7 @@ RSpec.describe '
     it "display all attributes when submitting with error: no name" do
       select supplier.name, from: "Enterprise"
       select "Weight (kg)", from: 'product_variant_unit_with_scale'
-      fill_in 'product_unit_value', with: "5.00 g"
+      fill_in 'product_unit_value_with_description', with: "5.00 g"
       assert_selector(:field, placeholder: "5kg g")
       fill_in 'product_display_as', with: "Big Box of Chocolates"
       select taxon.name, from: "product_primary_taxon_id"
@@ -39,7 +39,7 @@ RSpec.describe '
 
       expect(page).to have_content "Name can't be blank"
       expect(page).to have_field "Enterprise", with: supplier.id
-      expect(page).to have_field 'product_unit_value', with: "5.00 g"
+      expect(page).to have_field 'product_unit_value_with_description', with: "5 g"
       expect(page).to have_field 'product_display_as', with: "Big Box of Chocolates"
       expect(page).to have_field 'product_primary_taxon_id', with: taxon.id
       expect(page).to have_field 'product_price', with: '19.99'
@@ -55,8 +55,8 @@ RSpec.describe '
       select 'New supplier', from: "Enterprise"
       fill_in 'product_name', with: "new product name"
       select "Weight (kg)", from: 'product_variant_unit_with_scale'
-      fill_in 'product_unit_value', with: "0.00 g"
-      assert_selector(:field, placeholder: "0g g")
+      fill_in 'product_unit_value_with_description', with: "0.00 g"
+      assert_selector(:field, placeholder: "g")
       fill_in 'product_display_as', with: "Big Box of Chocolates"
       select taxon.name, from: "product_primary_taxon_id"
       fill_in 'product_price', with: '19.99'
@@ -69,7 +69,7 @@ RSpec.describe '
 
       expect(page).to have_field 'product_name', with: "new product name"
       expect(page).to have_field "Enterprise", with: supplier.id
-      expect(page).to have_field 'product_unit_value', with: "0 g"
+      expect(page).to have_field 'product_unit_value_with_description', with: "0 g"
       expect(page).to have_field 'product_display_as', with: "Big Box of Chocolates"
       expect(page).to have_field 'product_primary_taxon_id', with: taxon.id
       expect(page).to have_field 'product_price', with: '19.99'
@@ -81,6 +81,25 @@ RSpec.describe '
       expect(page.find("#product_variant_unit_field")).to have_content 'Weight (kg)'
 
       expect(page).to have_content "Unit value must be greater than 0"
+    end
+
+    it "shows fields depending on the unit and explains the unit price" do
+      expect(page).to have_field "product_display_as"
+      expect(page).not_to have_field "product_variant_unit_name"
+
+      select "Items", from: 'product_variant_unit_with_scale'
+
+      expect(page).to have_field "product_variant_unit_name"
+      expect(page).not_to have_field "product_display_as"
+
+      fill_in "product_variant_unit_name", with: "bunch"
+      fill_in "product_price", with: "3"
+
+      expect(find_field("Unit Price", disabled: true).value).to eq "$3.00 / bunch"
+
+      find("#product_unit_price_field .question-mark-icon").hover
+
+      expect(page).to have_content "The unit price increases transparency"
     end
 
     it "preserves 'Items' 'Unit Size' selection when submitting with error" do
@@ -97,7 +116,7 @@ RSpec.describe '
       select 'New supplier', from: "Enterprise"
       fill_in 'product_name', with: 'A new product !!!'
       select "Weight (kg)", from: 'product_variant_unit_with_scale'
-      fill_in 'product_unit_value', with: 5
+      fill_in 'product_unit_value_with_description', with: 5
       select taxon.name, from: "product_primary_taxon_id"
       fill_in 'product_price', with: '19.99'
       fill_in 'product_on_hand', with: 5
@@ -133,7 +152,7 @@ RSpec.describe '
       fill_in 'product_name', with: 'Hot Cakes'
       select 'New supplier', from: "Enterprise"
       select "Weight (kg)", from: 'product_variant_unit_with_scale'
-      fill_in 'product_unit_value', with: 1
+      fill_in 'product_unit_value_with_description', with: 1
       select taxon.name, from: "product_primary_taxon_id"
       fill_in 'product_price', with: '1.99'
       fill_in 'product_on_hand', with: 0
@@ -155,7 +174,7 @@ RSpec.describe '
       fill_in 'product_name', with: 'Hot Cakes'
       select 'New supplier', from: "Enterprise"
       select "Weight (kg)", from: 'product_variant_unit_with_scale'
-      fill_in "product_unit_value", with: ""
+      fill_in 'product_unit_value_with_description', with: ""
       select taxon.name, from: "product_primary_taxon_id"
       fill_in 'product_price', with: '1.99'
       fill_in 'product_on_hand', with: 0
@@ -173,7 +192,7 @@ RSpec.describe '
       fill_in 'product_name', with: 'Hot Cakes'
       select 'New supplier', from: "Enterprise"
       select "Weight (kg)", from: 'product_variant_unit_with_scale'
-      fill_in "product_unit_value", with: '1'
+      fill_in 'product_unit_value_with_description', with: '1'
       fill_in 'product_price', with: '1.99'
       fill_in 'product_on_hand', with: 0
       check 'product_on_demand'
@@ -189,7 +208,7 @@ RSpec.describe '
     it "creating product with empty product supplier fails" do
       fill_in 'product_name', with: 'Hot Cakes'
       select "Weight (kg)", from: 'product_variant_unit_with_scale'
-      fill_in "product_unit_value", with: '1'
+      fill_in 'product_unit_value_with_description', with: '1'
       fill_in 'product_price', with: '1.99'
       select taxon.name, from: "product_primary_taxon_id"
       fill_in 'product_on_hand', with: 0
@@ -214,7 +233,7 @@ RSpec.describe '
             fill_in 'product_name', with: 'Priceless Mangoes'
             select 'New supplier', from: "Enterprise"
             select "Weight (kg)", from: 'product_variant_unit_with_scale'
-            fill_in "product_unit_value", with: 1
+            fill_in 'product_unit_value_with_description', with: 1
             select taxon.name, from: "product_primary_taxon_id"
             fill_in 'product_price', with: price.to_s
             fill_in 'product_on_hand', with: 0
@@ -286,7 +305,7 @@ RSpec.describe '
         expect(page).to have_select "Enterprise"
         select 'Another Supplier', from: "Enterprise"
         select 'Weight (g)', from: 'product_variant_unit_with_scale'
-        fill_in 'product_unit_value', with: '500'
+        fill_in 'product_unit_value_with_description', with: '500'
         select taxon.name, from: "product_primary_taxon_id"
         select 'None', from: "product_tax_category_id"
 

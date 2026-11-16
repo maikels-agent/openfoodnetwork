@@ -40,6 +40,17 @@
   }
 }
 
+// Question mark icon as element of a TooltipComponent
+span.question-mark-icon {
+  display: inline-block;
+
+  // The explanation is a sentence instead of a short label.
+  & ~ .tooltip-container .tooltip {
+    width: max-content;
+    text-transform: none;
+  }
+}
+
 // Question mark icon into a field
 .field .question-mark-icon {
   width: 15px;
