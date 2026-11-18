@@ -4,8 +4,7 @@ module Spree
   module Admin
     class GeneralSettingsController < Spree::Admin::BaseController
       def edit
-        @preferences_general = [:site_name, :default_seo_title, :default_meta_keywords,
-                                :default_meta_description, :site_url]
+        @preferences_general = [:site_name, :default_seo_title, :site_url]
         @preferences_currency = [:display_currency, :hide_cents]
       end
 
