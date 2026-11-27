@@ -226,6 +226,63 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
+  visual:
+    needs: decide
+    if: needs.decide.outputs.run == 'true'
+    runs-on: ubuntu-22.04
+    services:
+      postgres: *postgres
+      redis: *redis
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: yarn
+
+      # The runner image updates Chrome weekly. Pin it so that a new browser
+      # release doesn't change the rendering of every baseline image.
+      - name: Set up Chrome
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: 158
+
+      - name: Install JS dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Set up database
+        run: |
+          bin/rails db:create db:schema:load
+
+      - name: Compile assets
+        run: |
+          bin/rails assets:precompile
+
+      - name: Run visual regression tests
+        env:
+          BROWSER_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
+        run: |
+          bundle exec rspec spec/system/visual
+
+      # Contains the current screenshot and a diff image for each mismatch.
+      # To accept an intended change, copy the *.current.png files over the
+      # baselines in spec/fixtures/visual/ (dropping the ".current" suffix).
+      - name: Archive visual differences
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-regression-screenshots
+          path: tmp/capybara/visual/
+          retention-days: 7
+          if-no-files-found: ignore
+
   engines:
     needs: decide
     if: needs.decide.outputs.run == 'true'
